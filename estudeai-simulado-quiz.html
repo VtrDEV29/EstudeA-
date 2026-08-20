@@ -316,7 +316,9 @@ function toggleTheme(){
   document.getElementById('theme-label').textContent = isDark ? 'Modo escuro' : 'Modo claro';
 }
 
-const questions = [
+const QUESTIONS_PER_ATTEMPT = 5;
+
+const questionPool = [
   {
     area: 'Linguagens',
     numero: 'Questão 6',
@@ -386,9 +388,107 @@ const questions = [
       { letra: 'E', texto: 'C(12,12)' }
     ],
     correta: 'A'
+  },
+  {
+    area: 'Linguagens',
+    numero: 'Questão 8',
+    textoBase: 'Artigo sobre mídias na educação física escolar, que analisa como a televisão constrói uma nova modalidade de consumo: o "esporte telespetáculo".',
+    enunciado: 'A reflexão trazida pelo texto, que aborda o esporte telespetáculo, está fundamentada na',
+    alternativas: [
+      { letra: 'A', texto: 'distorção da experiência de ser atleta transmitida aos espectadores.' },
+      { letra: 'B', texto: 'interpretação livre dos espectadores sobre o conteúdo transmitido.' },
+      { letra: 'C', texto: 'utilização de equipamentos audiovisuais de última geração.' },
+      { letra: 'D', texto: 'valorização de uma visão ampliada da prática esportiva.' },
+      { letra: 'E', texto: 'equiparação entre a forma da transmissão e o conteúdo esportivo.' }
+    ],
+    correta: 'A'
+  },
+  {
+    area: 'Linguagens',
+    numero: 'Questão 10',
+    textoBase: '"Uma ouriça", poema de João Cabral de Melo Neto, metaforiza mudanças de atitude por meio da imagem de um ouriço que ora se fecha, ora se abre.',
+    enunciado: 'Com apuro formal, o poema tece um conjunto semântico que metaforiza a atitude feminina de',
+    alternativas: [
+      { letra: 'A', texto: 'tenacidade transformada em brandura.' },
+      { letra: 'B', texto: 'obstinação traduzida em isolamento.' },
+      { letra: 'C', texto: 'inércia provocada pelo desejo platônico.' },
+      { letra: 'D', texto: 'irreverência cultivada de forma cautelosa.' },
+      { letra: 'E', texto: 'desconfiança consumada pela intolerância.' }
+    ],
+    correta: 'A'
+  },
+  {
+    area: 'Linguagens',
+    numero: 'Questão 16',
+    textoBase: 'Dois textos comparam história e memória das línguas: um trata da sedimentação linguística ao longo do tempo, outro da influência árabe na formação do português.',
+    enunciado: 'Relacionando-se as ideias dos textos a respeito da história e da memória das línguas, quanto à formação da língua portuguesa, constata-se que',
+    alternativas: [
+      { letra: 'A', texto: 'a presença de elementos de outras línguas foi historicamente avaliada como índice de riqueza.' },
+      { letra: 'B', texto: 'o estudioso pode identificar com precisão os elementos deixados por outras línguas.' },
+      { letra: 'C', texto: 'o português carrega marcas de outras línguas em suas múltiplas camadas históricas.' },
+      { letra: 'D', texto: 'o árabe e o latim estão presentes na formação escolar e na memória dos falantes brasileiros.' },
+      { letra: 'E', texto: 'a influência de outras línguas ocorreu de maneira uniforme ao longo da história.' }
+    ],
+    correta: 'C'
+  },
+  {
+    area: 'Ciências Humanas',
+    numero: 'Questão 48',
+    textoBase: 'O processamento da mandioca já era feito pelos povos nativos do Brasil antes da chegada de portugueses e africanos. Ao longo da colonização, a produção da farinha foi aperfeiçoada e ampliada, tornando-se comum em toda a colônia. Com a consolidação do comércio atlântico, a farinha atravessou os mares e chegou aos mercados africanos.',
+    enunciado: 'Considerando a formação do espaço atlântico, esse produto exemplifica historicamente a',
+    alternativas: [
+      { letra: 'A', texto: 'difusão de hábitos alimentares.' },
+      { letra: 'B', texto: 'disseminação de rituais festivos.' },
+      { letra: 'C', texto: 'ampliação dos saberes autóctones.' },
+      { letra: 'D', texto: 'apropriação de costumes guerreiros.' },
+      { letra: 'E', texto: 'diversificação de oferendas religiosas.' }
+    ],
+    correta: 'A'
+  },
+  {
+    area: 'Ciências Humanas',
+    numero: 'Questão 55',
+    textoBase: '"A cidade medieval é, antes de mais nada, uma sociedade de abundância, concentrada num pequeno espaço em meio a vastas regiões pouco povoadas. É também um lugar de produção e de trocas [...] um sistema de organização de um espaço fechado com muralhas."',
+    enunciado: 'No texto, o espaço descrito se caracteriza pela associação entre a ampliação das atividades urbanas e a',
+    alternativas: [
+      { letra: 'A', texto: 'emancipação do poder hegemônico da realeza.' },
+      { letra: 'B', texto: 'aceitação das práticas usurárias dos religiosos.' },
+      { letra: 'C', texto: 'independência da produção alimentar em relação aos campos.' },
+      { letra: 'D', texto: 'superação do ordenamento corporativo dos ofícios.' },
+      { letra: 'E', texto: 'permanência dos elementos arquitetônicos de proteção.' }
+    ],
+    correta: 'E'
+  },
+  {
+    area: 'Ciências Humanas',
+    numero: 'Questão 71',
+    textoBase: '"A soberania dos cidadãos dotados de plenos direitos era imprescindível para a existência da cidade-estado. Segundo os regimes políticos, a proporção desses cidadãos em relação à população total dos homens livres podia variar muito, sendo bastante pequena nas aristocracias e oligarquias e maior nas democracias."',
+    enunciado: 'Nas cidades-estado da Antiguidade Clássica, a proporção de cidadãos descrita no texto é explicada pela adoção do seguinte critério para a participação política:',
+    alternativas: [
+      { letra: 'A', texto: 'controle da terra.' },
+      { letra: 'B', texto: 'liberdade de culto.' },
+      { letra: 'C', texto: 'igualdade de gênero.' },
+      { letra: 'D', texto: 'exclusão dos militares.' },
+      { letra: 'E', texto: 'exigência de alfabetização.' }
+    ],
+    correta: 'A'
   }
 ];
 
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function pickQuestions(){
+  return shuffle(questionPool).slice(0, QUESTIONS_PER_ATTEMPT);
+}
+
+let questions = pickQuestions();
 let current = 0;
 const answers = {};
 
@@ -495,6 +595,7 @@ function finishQuiz(){
 }
 
 function restartQuiz(){
+  questions = pickQuestions();
   current = 0;
   Object.keys(answers).forEach(k => delete answers[k]);
   document.getElementById('results-view').style.display = 'none';

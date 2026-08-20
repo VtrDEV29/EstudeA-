@@ -337,7 +337,9 @@ if(sim1Score < PASS_SCORE){
   document.getElementById('locked-view').style.display = 'block';
 } else {
 
-const questions = [
+const QUESTIONS_PER_ATTEMPT = 4;
+
+const questionPool = [
   {
     area: 'Física',
     numero: 'Questão 117',
@@ -396,6 +398,20 @@ const questions = [
   }
 ];
 
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function pickQuestions(){
+  return shuffle(questionPool).slice(0, QUESTIONS_PER_ATTEMPT);
+}
+
+let questions = pickQuestions();
 let current = 0;
 const answers = {};
 
@@ -491,6 +507,7 @@ function finishQuiz(){
 }
 
 function restartQuiz(){
+  questions = pickQuestions();
   current = 0;
   Object.keys(answers).forEach(k => delete answers[k]);
   document.getElementById('results-view').style.display = 'none';

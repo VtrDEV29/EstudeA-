@@ -271,7 +271,7 @@
       </div>
       <div class="countdown-pill">
         <span class="badge" id="cd-days-pill">--</span>
-        <span class="txt">dias até o <b>ENEM</b> · continue firme</span>
+        <span class="txt">dias até o <b id="countdown-vestibular">ENEM</b> · continue firme</span>
       </div>
     </div>
 
@@ -297,15 +297,15 @@
     <div class="content-grid">
       <div class="card trilha-current">
         <div class="card-head">
-          <h2>Sua trilha — Reta final</h2>
+          <h2 id="trilha-card-title">Sua trilha — Reta final</h2>
           <a href="estudeai-trilha.html">Ver trilha completa</a>
         </div>
         <div class="tag-row">
-          <span class="tag">3º ano</span>
-          <span class="tag">ENEM</span>
+          <span class="tag" id="trilha-tag-ano">3º ano</span>
+          <span class="tag" id="trilha-tag-vestibular">ENEM</span>
         </div>
-        <h3>Funções e Geometria Analítica</h3>
-        <p>Você está na frente de Matemática. Faltam 4 módulos para fechar essa etapa da reta final.</p>
+        <h3 id="trilha-current-module">Geometria Analítica</h3>
+        <p id="trilha-current-desc">Você está na frente de Matemática. Comece pelo primeiro módulo da sua trilha.</p>
         <div class="progress-bar"><div class="fill" style="width:0%"></div></div>
         <div class="progress-label"><span>Progresso do módulo</span><b>0%</b></div>
         <button class="btn btn-solid">Continuar estudando</button>
@@ -366,6 +366,18 @@ function toggleTheme(){
   document.getElementById('theme-label').textContent = isDark ? 'Modo escuro' : 'Modo claro';
 }
 
+const ESTAGIO_POR_ANO = {
+  '1º ano': 'Base',
+  '2º ano': 'Consolidação',
+  '3º ano': 'Reta final'
+};
+
+const PRIMEIRO_MODULO_MAT = {
+  '1º ano': 'Conjuntos e Funções',
+  '2º ano': 'Funções Quadráticas',
+  '3º ano': 'Geometria Analítica'
+};
+
 function applyUserProfile(){
   let user = null;
   try { user = JSON.parse(localStorage.getItem('estudeai_user') || 'null'); } catch(e){}
@@ -373,18 +385,34 @@ function applyUserProfile(){
 
   const primeiroNome = user.nome.split(' ')[0];
   const inicial = user.nome.trim().charAt(0).toUpperCase();
+  const ano = user.ano || '3º ano';
+  const vestibular = user.vestibular || 'ENEM';
+  const estagio = ESTAGIO_POR_ANO[ano] || 'Reta final';
+  const primeiroModulo = PRIMEIRO_MODULO_MAT[ano] || PRIMEIRO_MODULO_MAT['3º ano'];
 
   const avatarEl = document.getElementById('profile-avatar');
   const nameEl = document.getElementById('profile-name');
   const metaEl = document.getElementById('profile-meta');
   const tagEl = document.getElementById('sidebar-logo-tag');
   const greetingEl = document.getElementById('dash-greeting');
+  const countdownVestibularEl = document.getElementById('countdown-vestibular');
+  const trilhaTitleEl = document.getElementById('trilha-card-title');
+  const trilhaAnoEl = document.getElementById('trilha-tag-ano');
+  const trilhaVestibularEl = document.getElementById('trilha-tag-vestibular');
+  const trilhaModuloEl = document.getElementById('trilha-current-module');
+  const trilhaDescEl = document.getElementById('trilha-current-desc');
 
   if(avatarEl) avatarEl.textContent = inicial;
   if(nameEl) nameEl.textContent = primeiroNome;
-  if(metaEl) metaEl.textContent = `${user.ano} · ${user.vestibular}`;
-  if(tagEl) tagEl.textContent = `${user.ano} · ${user.vestibular}`;
+  if(metaEl) metaEl.textContent = `${ano} · ${vestibular}`;
+  if(tagEl) tagEl.textContent = `${ano} · ${vestibular}`;
   if(greetingEl) greetingEl.textContent = `Olá, ${primeiroNome}!`;
+  if(countdownVestibularEl) countdownVestibularEl.textContent = vestibular;
+  if(trilhaTitleEl) trilhaTitleEl.textContent = `Sua trilha — ${estagio}`;
+  if(trilhaAnoEl) trilhaAnoEl.textContent = ano;
+  if(trilhaVestibularEl) trilhaVestibularEl.textContent = vestibular;
+  if(trilhaModuloEl) trilhaModuloEl.textContent = primeiroModulo;
+  if(trilhaDescEl) trilhaDescEl.textContent = `Você está na frente de Matemática. Comece pelo primeiro módulo da sua trilha do ${ano}.`;
 }
 applyUserProfile();
 

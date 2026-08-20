@@ -154,6 +154,11 @@
   .exam-meta{font-size:13px;color:var(--text-muted);margin:0 0 18px;flex:1;}
   .exam-subjects{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px;}
 
+  .vestibular-notice{
+    background:var(--paper);border:1px solid var(--border-soft);border-left:3px solid var(--gold-deep);
+    border-radius:0 12px 12px 0;padding:16px 18px;margin-bottom:22px;font-size:13.5px;color:var(--text-muted);
+  }
+  .vestibular-notice b{color:var(--text-ink);}
   .source-note{
     font-size:12.5px;color:var(--text-muted);border-top:1px solid var(--border-soft);
     padding-top:18px;max-width:640px;
@@ -234,8 +239,10 @@
       <p class="page-sub">Questões oficiais de vestibulares, no formato de múltipla escolha e com correção automática no final.</p>
     </div>
 
-    <div class="exam-grid">
-      <div class="exam-card">
+    <div class="vestibular-notice" id="vestibular-notice" style="display:none;"></div>
+
+    <div class="exam-grid" id="exam-grid">
+      <div class="exam-card" data-vestibular="ENEM">
         <span class="exam-badge">Questões reais</span>
         <h3>ENEM 2019 — Seleção oficial</h3>
         <p class="exam-meta">5 questões da prova oficial do ENEM 2019 · Linguagens, Ciências Humanas e Matemática · ~15 min</p>
@@ -248,7 +255,7 @@
         <p class="score-note" id="sim1-score-note"></p>
       </div>
 
-      <div class="exam-card" id="card-sim2">
+      <div class="exam-card" id="card-sim2" data-vestibular="ENEM">
         <span class="exam-badge soon" id="sim2-badge">🔒 Bloqueado</span>
         <h3>ENEM 2019 — Natureza e Matemática</h3>
         <p class="exam-meta">4 questões da prova oficial do ENEM 2019 · Física, Química, Biologia e Matemática · ~12 min</p>
@@ -260,13 +267,24 @@
         <p class="score-note" id="sim2-lock-note">Acerte pelo menos 3 de 5 no Simulado 1 para desbloquear.</p>
       </div>
 
-      <div class="exam-card disabled">
+      <div class="exam-card disabled" data-vestibular="FUVEST">
         <span class="exam-badge soon">Em breve</span>
         <h3>FUVEST — 1ª fase</h3>
         <p class="exam-meta">Seleção de questões oficiais da FUVEST, foco em exatas.</p>
         <div class="exam-subjects">
           <span class="tag">Matemática</span>
           <span class="tag">Física</span>
+        </div>
+        <button class="btn btn-ghost" disabled>Em breve</button>
+      </div>
+
+      <div class="exam-card disabled" data-vestibular="UNICAMP">
+        <span class="exam-badge soon">Em breve</span>
+        <h3>UNICAMP — 1ª fase</h3>
+        <p class="exam-meta">Seleção de questões oficiais da UNICAMP, com redação dissertativa.</p>
+        <div class="exam-subjects">
+          <span class="tag">Redação</span>
+          <span class="tag">Geral</span>
         </div>
         <button class="btn btn-ghost" disabled>Em breve</button>
       </div>
@@ -303,6 +321,23 @@ function applyUserProfile(){
   if(tagEl) tagEl.textContent = `${user.ano} · ${user.vestibular}`;
 }
 applyUserProfile();
+
+function applyVestibularFilter(){
+  let user = null;
+  try { user = JSON.parse(localStorage.getItem('estudeai_user') || 'null'); } catch(e){}
+  const vestibular = user && user.vestibular;
+
+  if(!vestibular || vestibular === 'ENEM' || vestibular === 'Ainda não sei') return;
+
+  const grid = document.getElementById('exam-grid');
+  const matchCard = grid.querySelector(`.exam-card[data-vestibular="${vestibular}"]`);
+  if(matchCard) grid.prepend(matchCard);
+
+  const notice = document.getElementById('vestibular-notice');
+  notice.style.display = 'block';
+  notice.innerHTML = `Você escolheu <b>${vestibular}</b> no cadastro. Os simulados de ${vestibular} ainda estão em produção — assim que lançarmos, aparecem aqui primeiro. Enquanto isso, pratique com as questões reais do ENEM abaixo.`;
+}
+applyVestibularFilter();
 
 const SIM1_PASS_SCORE = 3;
 let sim1Score = null;

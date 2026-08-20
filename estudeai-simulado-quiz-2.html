@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EstudeAI — Simulado ENEM 2019</title>
+<title>EstudeAI — Simulado ENEM 2019 · Natureza e Matemática</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -140,6 +140,12 @@
   .greeting-eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:8px;}
   h1{font-family:var(--font-display);font-size:26px;font-weight:600;margin:0 0 28px;letter-spacing:-.01em;}
 
+  /* ---------- locked state ---------- */
+  .locked-card{max-width:520px;margin:20px auto 0;padding:40px 36px;text-align:center;}
+  .locked-icon{font-size:32px;margin-bottom:16px;}
+  .locked-card h2{font-family:var(--font-display);font-size:21px;font-weight:600;margin:0 0 10px;}
+  .locked-card p{font-size:14px;color:var(--text-muted);margin:0 0 24px;}
+
   /* ---------- quiz ---------- */
   .quiz-progress{max-width:680px;margin:0 auto 20px;}
   .quiz-progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
@@ -186,13 +192,10 @@
   .result-q{font-size:14px;font-weight:600;margin-bottom:2px;}
   .result-detail{font-size:12.5px;color:var(--text-muted);font-family:var(--font-mono);}
   .results-actions{display:flex;justify-content:space-between;margin-top:26px;}
-  .unlock-banner{
+  .results-note{
     margin:20px 0;padding:16px 18px;border-radius:12px;font-size:13.5px;
-    display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    background:var(--paper);border:1px solid var(--border-soft);color:var(--text-muted);text-align:center;
   }
-  .unlock-banner.pass{background:rgba(61,122,84,.1);border:1px solid var(--good);color:var(--good);}
-  .unlock-banner.fail{background:var(--paper);border:1px solid var(--border-soft);color:var(--text-muted);}
-  html[data-theme="dark"] .unlock-banner.pass{background:rgba(111,203,143,.1);}
   .results-source{font-size:12px;color:var(--text-muted);text-align:center;margin-top:18px;}
 
   @media(max-width:980px){
@@ -266,14 +269,23 @@
 
   <main>
     <a href="estudeai-simulados.html" class="back-link">← Simulados</a>
-    <div class="greeting-eyebrow">ENEM 2019 · Seleção oficial</div>
+    <div class="greeting-eyebrow">ENEM 2019 · Natureza e Matemática</div>
     <h1>Simulado</h1>
+
+    <div id="locked-view" style="display:none;">
+      <div class="card locked-card">
+        <div class="locked-icon">🔒</div>
+        <h2>Este simulado ainda está bloqueado</h2>
+        <p>Acerte pelo menos 3 de 5 questões no Simulado 1 (ENEM 2019 — Seleção oficial) para liberar este.</p>
+        <a href="estudeai-simulado-quiz.html" class="btn btn-solid">Fazer o Simulado 1</a>
+      </div>
+    </div>
 
     <div id="quiz-view">
       <div class="quiz-progress">
         <div class="quiz-progress-top">
-          <span class="q-position" id="q-position">Questão 1 de 5</span>
-          <span class="tag" id="q-area">Linguagens</span>
+          <span class="q-position" id="q-position">Questão 1 de 4</span>
+          <span class="tag" id="q-area">Física</span>
         </div>
         <div class="quiz-dots" id="quiz-dots"></div>
       </div>
@@ -293,10 +305,10 @@
     <div id="results-view" style="display:none;">
       <div class="card results-card">
         <div class="results-hero">
-          <div class="results-score"><span id="score-num">0</span><span class="of" id="score-of">/ 5</span></div>
+          <div class="results-score"><span id="score-num">0</span><span class="of" id="score-of">/ 4</span></div>
           <div class="results-label">questões corretas</div>
         </div>
-        <div class="unlock-banner" id="unlock-banner"></div>
+        <div class="results-note">Novos simulados (FUVEST, UNICAMP) chegam em breve.</div>
         <div class="results-list" id="results-list"></div>
         <div class="results-actions">
           <button class="btn btn-ghost" onclick="restartQuiz()">Refazer simulado</button>
@@ -316,74 +328,69 @@ function toggleTheme(){
   document.getElementById('theme-label').textContent = isDark ? 'Modo escuro' : 'Modo claro';
 }
 
+const PASS_SCORE = 3;
+let sim1Score = 0;
+try { sim1Score = Number(localStorage.getItem('estudeai_sim1_score') || 0); } catch(e){}
+
+if(sim1Score < PASS_SCORE){
+  document.getElementById('quiz-view').style.display = 'none';
+  document.getElementById('locked-view').style.display = 'block';
+} else {
+
 const questions = [
   {
-    area: 'Linguagens',
-    numero: 'Questão 6',
-    textoBase: '"Um amor desse / Era 24 horas lado a lado / Um radar na pele, aquele sentimento alucinado..." — trecho da canção "Coração pede socorro", de Azevedo, Leão e Quadros, composta para uma campanha de combate à violência contra a mulher.',
-    enunciado: 'A estratégia argumentativa empregada nessa canção para tratar do tema da violência contra a mulher consiste em',
+    area: 'Física',
+    numero: 'Questão 117',
+    textoBase: 'Slackline é um esporte no qual o atleta deve se equilibrar e executar manobras sobre uma fita esticada entre dois pontos fixos, a alguns centímetros do solo.',
+    enunciado: 'Quando uma atleta de massa igual a 80 kg está exatamente no meio da fita, essa se desloca verticalmente, formando um ângulo de 10° com a horizontal em cada metade. Considerando g = 10 m/s², cos(10°) = 0,98 e sen(10°) = 0,17, qual é a força que a fita exerce em cada uma das extremidades fixas por causa da presença da atleta?',
     alternativas: [
-      { letra: 'A', texto: 'revelar a submissão das mulheres à violência que sofrem.' },
-      { letra: 'B', texto: 'reforçar a importância de ouvir os apelos de mulheres agredidas.' },
-      { letra: 'C', texto: 'explorar a ambiguidade de sentidos para evidenciar que dominação não é amor.' },
-      { letra: 'D', texto: 'expor a importância da denúncia da violência doméstica.' },
-      { letra: 'E', texto: 'naturalizar situações de opressão vividas numa sociedade patriarcal.' }
+      { letra: 'A', texto: '4,0 × 10² N' },
+      { letra: 'B', texto: '4,1 × 10² N' },
+      { letra: 'C', texto: '8,0 × 10² N' },
+      { letra: 'D', texto: '2,4 × 10³ N' },
+      { letra: 'E', texto: '4,7 × 10³ N' }
+    ],
+    correta: 'D'
+  },
+  {
+    area: 'Química',
+    numero: 'Questão 119',
+    textoBase: 'Por muito tempo considerou-se que os gases nobres, por terem a camada de valência completa, não formariam compostos químicos. Em 1962, no entanto, foi realizada com sucesso a reação entre o xenônio e o hexafluoreto de platina, e desde então outros compostos de gases nobres vêm sendo sintetizados — entre os mais estáveis, o difluoreto de xenônio, no qual dois átomos de flúor se ligam covalentemente ao átomo de xenônio.',
+    enunciado: 'Ao se escrever a fórmula de Lewis do difluoreto de xenônio, quantos elétrons estarão na camada de valência do átomo do gás nobre?',
+    alternativas: [
+      { letra: 'A', texto: '6' },
+      { letra: 'B', texto: '8' },
+      { letra: 'C', texto: '10' },
+      { letra: 'D', texto: '12' },
+      { letra: 'E', texto: '14' }
     ],
     correta: 'C'
   },
   {
-    area: 'Linguagens',
-    numero: 'Questão 11',
-    textoBase: 'Cartaz de campanha com a imagem de um par de sapatos e o texto: "Vamos calçar os sapatos dos refugiados e dar o primeiro passo para entender sua situação."',
-    enunciado: 'Nessa peça publicitária, a articulação entre a imagem do sapato e o texto verbal tem como objetivo',
+    area: 'Biologia',
+    numero: 'Questão 121',
+    textoBase: 'A eritropoetina (EPO) é um hormônio secretado pelos rins que influencia a maturação dos eritrócitos (glóbulos vermelhos). Suas formas recombinantes, sintetizadas em laboratório, têm sido usadas por alguns atletas em esportes de resistência na busca por melhores resultados — uso proibido pelo Comitê Olímpico Internacional.',
+    enunciado: 'Uma influência que esse doping pode exercer na melhoria da capacidade física desses atletas está relacionada ao transporte de',
     alternativas: [
-      { letra: 'A', texto: 'criticar as condições de vida difíceis enfrentadas pelos refugiados.' },
-      { letra: 'B', texto: 'revelar a longa trajetória percorrida pelos refugiados.' },
-      { letra: 'C', texto: 'incentivar campanhas de doação de calçados para refugiados.' },
-      { letra: 'D', texto: 'denunciar a situação de necessidade vivida pelos refugiados.' },
-      { letra: 'E', texto: 'simbolizar a necessidade de adesão à causa dos refugiados.' }
-    ],
-    correta: 'E'
-  },
-  {
-    area: 'Ciências Humanas',
-    numero: 'Questão 46',
-    textoBase: '"A hospitalidade pura consiste em acolher aquele que chega antes de lhe impor condições, antes de saber e indagar o que quer que seja, ainda que seja um nome ou um \'documento\' de identidade." — DERRIDA, J. Papel-máquina.',
-    enunciado: 'Associado ao contexto migratório contemporâneo, o conceito de hospitalidade proposto pelo autor impõe a necessidade de',
-    alternativas: [
-      { letra: 'A', texto: 'anulação da diferença.' },
-      { letra: 'B', texto: 'cristalização da biografia.' },
-      { letra: 'C', texto: 'incorporação da alteridade.' },
-      { letra: 'D', texto: 'supressão da comunicação.' },
-      { letra: 'E', texto: 'verificação da proveniência.' }
+      { letra: 'A', texto: 'lipídios, para aumento do gasto calórico.' },
+      { letra: 'B', texto: 'ATP, para aumento da síntese hormonal.' },
+      { letra: 'C', texto: 'oxigênio, para aumento da produção de ATP.' },
+      { letra: 'D', texto: 'proteínas, para aumento da massa muscular.' },
+      { letra: 'E', texto: 'vitamina C, para aumento da integridade dos vasos sanguíneos.' }
     ],
     correta: 'C'
-  },
-  {
-    area: 'Ciências Humanas',
-    numero: 'Questão 47',
-    textoBase: '"Em sentido geral e fundamental, Direito é a técnica da coexistência humana, isto é, a técnica voltada a tornar possível a coexistência dos homens." — ABBAGNANO, N. Dicionário de Filosofia.',
-    enunciado: 'O sentido geral e fundamental do Direito, segundo o texto, refere-se à',
-    alternativas: [
-      { letra: 'A', texto: 'aplicação de códigos legais.' },
-      { letra: 'B', texto: 'regulação do convívio social.' },
-      { letra: 'C', texto: 'legitimação de decisões políticas.' },
-      { letra: 'D', texto: 'mediação de conflitos econômicos.' },
-      { letra: 'E', texto: 'representação da autoridade constituída.' }
-    ],
-    correta: 'B'
   },
   {
     area: 'Matemática',
-    numero: 'Questão 137',
-    textoBase: null,
-    enunciado: 'Uma fábrica monta trens de brinquedo compostos por uma locomotiva e 12 vagões, cujas posições são fixas e numeradas de 1 a 12. Desses 12 vagões, 4 são vermelhos, 3 são azuis, 3 são verdes e 2 são amarelos. De quantas formas diferentes esses trens podem ser montados, considerando apenas as variações de cores entre as posições dos vagões?',
+    numero: 'Questão 140',
+    textoBase: 'A cor das flores da hortênsia (Hydrangea macrophylla) depende do pH do solo: em solos ácidos (pH < 7) as flores são azuis; em solos alcalinos (pH > 7) são rosadas. As hortênsias rosadas mais valorizadas comercialmente, em uma determinada região, são produzidas em solo com pH abaixo de 8.',
+    enunciado: 'Sabendo que pH = –log₁₀x, em que x é a concentração de íons de hidrogênio (H⁺) no solo, para que as hortênsias sejam rosadas nessa região a concentração de íons de hidrogênio deve assumir',
     alternativas: [
-      { letra: 'A', texto: 'C(12,4) × C(8,3) × C(5,3) × C(2,2)' },
-      { letra: 'B', texto: '12! / (4! × 3! × 3! × 2!)' },
-      { letra: 'C', texto: 'C(12,4) + C(12,3) + C(12,3) + C(12,2)' },
-      { letra: 'D', texto: '4! × 3! × 3! × 2!' },
-      { letra: 'E', texto: 'C(12,12)' }
+      { letra: 'A', texto: 'qualquer valor acima de 10⁻⁸.' },
+      { letra: 'B', texto: 'qualquer valor positivo abaixo de 10⁻⁷.' },
+      { letra: 'C', texto: 'um valor entre 7 e 8.' },
+      { letra: 'D', texto: 'um valor entre 70 e 80.' },
+      { letra: 'E', texto: 'um valor entre 10⁻⁸ e 10⁻⁷.' }
     ],
     correta: 'A'
   }
@@ -448,16 +455,14 @@ function goNext(){
   else { finishQuiz(); }
 }
 
-const PASS_SCORE = 3;
-
 function finishQuiz(){
   let score = 0;
   questions.forEach((q, i) => { if(answers[i] === q.correta) score++; });
 
   try {
-    const prevScore = Number(localStorage.getItem('estudeai_sim1_score') || 0);
+    const prevScore = Number(localStorage.getItem('estudeai_sim2_score') || 0);
     if(score > prevScore){
-      localStorage.setItem('estudeai_sim1_score', score);
+      localStorage.setItem('estudeai_sim2_score', score);
     }
   } catch(e){}
 
@@ -465,15 +470,6 @@ function finishQuiz(){
   document.getElementById('results-view').style.display = 'block';
   document.getElementById('score-num').textContent = score;
   document.getElementById('score-of').textContent = `/ ${questions.length}`;
-
-  const banner = document.getElementById('unlock-banner');
-  if(score >= PASS_SCORE){
-    banner.className = 'unlock-banner pass';
-    banner.innerHTML = `<span>🎉 Você acertou ${score} de ${questions.length} e desbloqueou o próximo simulado.</span><a href="estudeai-simulado-quiz-2.html" class="btn btn-solid btn-sm">Ir para o próximo</a>`;
-  } else {
-    banner.className = 'unlock-banner fail';
-    banner.innerHTML = `<span>Acerte pelo menos ${PASS_SCORE} de ${questions.length} para desbloquear o próximo simulado. Você acertou ${score}.</span>`;
-  }
 
   const list = document.getElementById('results-list');
   list.innerHTML = '';
@@ -503,6 +499,8 @@ function restartQuiz(){
 }
 
 renderQuestion();
+
+}
 </script>
 
 </body>

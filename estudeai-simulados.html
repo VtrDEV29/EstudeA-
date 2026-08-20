@@ -67,6 +67,8 @@
   .btn-ghost:hover{background:var(--card);}
   .btn-sm{padding:7px 14px;font-size:13px;}
   .btn[disabled]{opacity:.4;pointer-events:none;}
+  .score-note{font-size:12px;color:var(--text-muted);margin:10px 0 0;text-align:center;}
+  .score-note.unlocked{color:var(--good);font-weight:600;}
 
   .tag{font-size:11.5px;padding:4px 10px;border-radius:100px;border:1px solid var(--border-soft);color:var(--text-muted);}
 
@@ -243,6 +245,19 @@
           <span class="tag">Matemática</span>
         </div>
         <a href="estudeai-simulado-quiz.html" class="btn btn-solid">Iniciar simulado</a>
+        <p class="score-note" id="sim1-score-note"></p>
+      </div>
+
+      <div class="exam-card" id="card-sim2">
+        <span class="exam-badge soon" id="sim2-badge">🔒 Bloqueado</span>
+        <h3>ENEM 2019 — Natureza e Matemática</h3>
+        <p class="exam-meta">4 questões da prova oficial do ENEM 2019 · Física, Química, Biologia e Matemática · ~12 min</p>
+        <div class="exam-subjects">
+          <span class="tag">Ciências da Natureza</span>
+          <span class="tag">Matemática</span>
+        </div>
+        <button class="btn btn-ghost" id="sim2-btn" disabled>Bloqueado</button>
+        <p class="score-note" id="sim2-lock-note">Acerte pelo menos 3 de 5 no Simulado 1 para desbloquear.</p>
       </div>
 
       <div class="exam-card disabled">
@@ -252,17 +267,6 @@
         <div class="exam-subjects">
           <span class="tag">Matemática</span>
           <span class="tag">Física</span>
-        </div>
-        <button class="btn btn-ghost" disabled>Em breve</button>
-      </div>
-
-      <div class="exam-card disabled">
-        <span class="exam-badge soon">Em breve</span>
-        <h3>UNICAMP — 1ª fase</h3>
-        <p class="exam-meta">Seleção de questões oficiais da UNICAMP, com redação dissertativa.</p>
-        <div class="exam-subjects">
-          <span class="tag">Redação</span>
-          <span class="tag">Geral</span>
         </div>
         <button class="btn btn-ghost" disabled>Em breve</button>
       </div>
@@ -278,6 +282,27 @@ function toggleTheme(){
   const isDark = html.getAttribute('data-theme') === 'dark';
   html.setAttribute('data-theme', isDark ? 'light' : 'dark');
   document.getElementById('theme-label').textContent = isDark ? 'Modo escuro' : 'Modo claro';
+}
+
+const SIM1_PASS_SCORE = 3;
+let sim1Score = null;
+try { sim1Score = localStorage.getItem('estudeai_sim1_score'); } catch(e){}
+
+if(sim1Score !== null){
+  const note = document.getElementById('sim1-score-note');
+  note.textContent = `Sua pontuação: ${sim1Score}/5`;
+
+  if(Number(sim1Score) >= SIM1_PASS_SCORE){
+    document.getElementById('sim2-badge').textContent = 'Questões reais';
+    document.getElementById('sim2-badge').classList.remove('soon');
+
+    const btn = document.getElementById('sim2-btn');
+    btn.removeAttribute('disabled');
+    btn.textContent = 'Iniciar simulado';
+    btn.outerHTML = `<a href="estudeai-simulado-quiz-2.html" class="btn btn-solid">Iniciar simulado</a>`;
+
+    document.getElementById('sim2-lock-note').remove();
+  }
 }
 </script>
 

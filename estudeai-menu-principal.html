@@ -677,6 +677,12 @@
 </footer>
 
 <script>
+const CHAVES_PROGRESSO = [
+  'estudeai_sim1_score', 'estudeai_sim1_total',
+  'estudeai_sim2_score', 'estudeai_sim2_total',
+  'estudeai_modulos_concluidos', 'estudeai_activity_log'
+];
+
 function criarConta(e){
   e.preventDefault();
   const user = {
@@ -685,7 +691,10 @@ function criarConta(e){
     vestibular: document.getElementById('cad-vestibular').value,
     email: document.getElementById('cad-email').value.trim()
   };
-  try { localStorage.setItem('estudeai_user', JSON.stringify(user)); } catch(err){}
+  try {
+    CHAVES_PROGRESSO.forEach(chave => localStorage.removeItem(chave));
+    localStorage.setItem('estudeai_user', JSON.stringify(user));
+  } catch(err){}
   window.location.href = 'estudeai-dashboard.html';
   return false;
 }

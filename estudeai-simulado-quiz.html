@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EstudeAI — Simulado ENEM 2019</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10192B;
+    --ink-soft:#1B2740;
+    --paper:#F4F6F9;
+    --card:#FFFFFF;
+    --gold:#2C4A75;
+    --gold-deep:#14284A;
+    --gold-on-dark:#9DBEE0;
+    --correction:#D64550;
+    --good:#3D7A54;
+    --text-ink:#10192B;
+    --text-muted:#5B6472;
+    --text-on-ink:#EDEEE6;
+    --text-on-ink-muted:#7B9BC2;
+    --border-soft:#DCE3EC;
+    --header-bg:rgba(244,246,249,0.92);
+    --radius-card:16px;
+    --font-display:'Fraunces',serif;
+    --font-body:'Space Grotesk',sans-serif;
+    --font-mono:'JetBrains Mono',monospace;
+  }
+  html[data-theme="dark"]{
+    --ink:#040A16;
+    --ink-soft:#0B1626;
+    --paper:#0A1424;
+    --card:#101F36;
+    --gold:#6FA0DA;
+    --gold-deep:#9DCBFA;
+    --gold-on-dark:#9DCBFA;
+    --correction:#E17B85;
+    --good:#6FCB8F;
+    --text-ink:#E9EEF5;
+    --text-muted:#8CA0BC;
+    --text-on-ink:#F4F6F9;
+    --text-on-ink-muted:#7E9CC2;
+    --border-soft:#1E2E48;
+    --header-bg:rgba(10,20,36,0.88);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:var(--paper);color:var(--text-ink);
+    font-family:var(--font-body);line-height:1.5;
+    transition:background-color .25s ease, color .25s ease;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;}
+  aside, .card, .btn, input, select{transition:background-color .25s ease, border-color .25s ease, color .25s ease;}
+
+  .bubbles{display:flex;gap:6px;}
+  .bubble{width:11px;height:11px;border-radius:50%;border:1.4px solid currentColor;display:inline-block;}
+  .bubble.filled{background:currentColor;}
+
+  .btn{font-family:var(--font-body);font-weight:600;font-size:14px;padding:10px 18px;border-radius:100px;border:1.5px solid transparent;}
+  .btn-solid{background:var(--text-ink);color:var(--paper);}
+  .btn-solid:hover{opacity:.85;}
+  .btn-ghost{color:var(--text-ink);border-color:var(--border-soft);background:transparent;}
+  .btn-ghost:hover{background:var(--card);}
+  .btn[disabled]{opacity:.35;pointer-events:none;}
+
+  .tag{font-size:11.5px;padding:4px 10px;border-radius:100px;border:1px solid var(--border-soft);color:var(--text-muted);}
+  .card{background:var(--card);border:1px solid var(--border-soft);border-radius:var(--radius-card);}
+
+  /* ---------- layout ---------- */
+  .app{display:grid;grid-template-columns:250px 1fr;min-height:100vh;}
+
+  /* ---------- sidebar ---------- */
+  aside{
+    background:var(--ink);color:var(--text-on-ink);
+    padding:28px 18px;display:flex;flex-direction:column;
+    position:sticky;top:0;height:100vh;
+    border-right:1px solid rgba(255,255,255,0.06);
+  }
+  .logo{
+    display:flex;align-items:center;gap:11px;font-family:var(--font-display);
+    font-weight:600;font-size:19px;margin-bottom:30px;padding:4px 8px 22px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .logo .logo-mark{
+    width:34px;height:34px;border-radius:10px;flex-shrink:0;
+    background:rgba(157,190,224,0.14);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .logo svg{width:18px;height:18px;flex-shrink:0;color:var(--gold-on-dark);}
+  .logo-text{display:flex;flex-direction:column;gap:3px;line-height:1.15;}
+  .logo-tag{font-family:var(--font-mono);font-size:10px;font-weight:500;color:var(--text-on-ink-muted);letter-spacing:.02em;}
+  .nav-label{
+    font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--text-on-ink-muted);opacity:.65;padding:0 14px;margin-bottom:10px;
+  }
+  .side-nav{display:flex;flex-direction:column;gap:2px;flex:1;}
+  .side-link{
+    position:relative;display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:11px;
+    font-size:14px;color:var(--text-on-ink-muted);font-weight:500;letter-spacing:.01em;
+  }
+  .side-link .ic{
+    width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+    background:transparent;flex-shrink:0;
+  }
+  .side-link svg{width:16px;height:16px;flex-shrink:0;}
+  .side-link:hover{background:rgba(255,255,255,0.05);color:var(--text-on-ink);}
+  .side-link.active{background:rgba(157,190,224,0.1);color:var(--text-on-ink);font-weight:600;}
+  .side-link.active .ic{background:rgba(157,190,224,0.16);color:var(--gold-on-dark);}
+  .side-link.active::before{
+    content:"";position:absolute;left:-18px;top:50%;transform:translateY(-50%);
+    width:3px;height:18px;border-radius:100px;background:var(--gold-on-dark);
+  }
+  .side-foot{display:flex;flex-direction:column;gap:12px;padding-top:18px;margin-top:6px;border-top:1px solid rgba(255,255,255,0.08);}
+  .theme-toggle-side{
+    display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;
+    color:var(--text-on-ink-muted);font-size:13px;border:1px solid rgba(255,255,255,0.12);background:transparent;width:100%;
+  }
+  .theme-toggle-side:hover{background:rgba(255,255,255,0.06);color:var(--text-on-ink);}
+  .theme-toggle-side svg{width:14px;height:14px;}
+  .icon-dark{display:none;}
+  html[data-theme="dark"] .icon-light{display:none;}
+  html[data-theme="dark"] .icon-dark{display:block;}
+  .profile-mini{display:flex;align-items:center;gap:11px;padding:8px;border-radius:12px;background:rgba(255,255,255,0.04);}
+  .avatar{
+    width:32px;height:32px;border-radius:50%;background:var(--gold-on-dark);color:var(--ink);
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;
+  }
+  .profile-mini .name{font-size:13px;font-weight:600;color:var(--text-on-ink);}
+  .profile-mini .meta{font-size:11.5px;color:var(--text-on-ink-muted);}
+
+  /* ---------- main ---------- */
+  main{padding:36px 44px 60px;max-width:1180px;}
+  .back-link{font-family:var(--font-mono);font-size:13px;color:var(--text-muted);display:inline-block;margin-bottom:16px;}
+  .back-link:hover{color:var(--text-ink);}
+  .greeting-eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:8px;}
+  h1{font-family:var(--font-display);font-size:26px;font-weight:600;margin:0 0 28px;letter-spacing:-.01em;}
+
+  /* ---------- quiz ---------- */
+  .quiz-progress{max-width:680px;margin:0 auto 20px;}
+  .quiz-progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .q-position{font-family:var(--font-mono);font-size:13px;color:var(--text-muted);}
+  .quiz-dots{display:flex;gap:8px;}
+  .quiz-dot{
+    width:26px;height:26px;border-radius:50%;border:1.5px solid var(--border-soft);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-size:11px;color:var(--text-muted);flex-shrink:0;
+  }
+  .quiz-dot.answered{background:var(--gold-deep);border-color:var(--gold-deep);color:#fff;}
+  .quiz-dot.current{border-color:var(--gold-deep);box-shadow:0 0 0 3px rgba(157,190,224,.35);}
+
+  .quiz-card{max-width:680px;margin:0 auto;padding:32px;}
+  .quiz-context{
+    background:var(--paper);border-left:3px solid var(--gold-deep);padding:16px 18px;
+    border-radius:0 10px 10px 0;font-size:14px;color:var(--text-muted);margin-bottom:22px;font-style:italic;
+  }
+  .quiz-enunciado{font-family:var(--font-display);font-size:19px;font-weight:500;line-height:1.4;color:var(--text-ink);margin:0 0 24px;}
+  .quiz-options{display:flex;flex-direction:column;gap:10px;}
+  .option{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1.5px solid var(--border-soft);border-radius:12px;cursor:pointer;}
+  .option:hover{border-color:var(--gold);}
+  .option.selected{border-color:var(--gold-deep);background:var(--paper);}
+  .opt-letter{
+    width:30px;height:30px;border-radius:50%;border:1.5px solid var(--text-muted);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--text-muted);flex-shrink:0;
+  }
+  .option.selected .opt-letter{border-color:var(--gold-deep);background:var(--gold-deep);color:#fff;}
+  .opt-text{font-size:14.5px;color:var(--text-ink);}
+
+  .quiz-nav{display:flex;justify-content:space-between;max-width:680px;margin:22px auto 0;}
+
+  .results-card{max-width:680px;margin:0 auto;padding:36px;}
+  .results-hero{text-align:center;padding-bottom:24px;border-bottom:1px solid var(--border-soft);margin-bottom:8px;}
+  .results-score{font-family:var(--font-mono);font-weight:700;font-size:52px;color:var(--gold-deep);}
+  .results-score .of{font-size:22px;color:var(--text-muted);margin-left:4px;}
+  .results-label{font-size:13px;color:var(--text-muted);margin-top:4px;}
+  .result-row{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-top:1px solid var(--border-soft);}
+  .result-row:first-child{border-top:none;}
+  .result-dot{width:14px;height:14px;border-radius:50%;margin-top:3px;flex-shrink:0;border:1.5px solid var(--border-soft);}
+  .result-dot.correct{background:var(--good);border-color:var(--good);}
+  .result-dot.wrong{background:var(--correction);border-color:var(--correction);}
+  .result-q{font-size:14px;font-weight:600;margin-bottom:2px;}
+  .result-detail{font-size:12.5px;color:var(--text-muted);font-family:var(--font-mono);}
+  .results-actions{display:flex;justify-content:space-between;margin-top:26px;}
+  .results-source{font-size:12px;color:var(--text-muted);text-align:center;margin-top:18px;}
+
+  @media(max-width:980px){
+    .app{grid-template-columns:1fr;}
+    aside{position:relative;height:auto;flex-direction:row;align-items:center;padding:16px 20px;}
+    .side-nav,.side-foot{display:none;}
+    main{padding:28px 22px 48px;}
+  }
+  @media(max-width:700px){
+    .quiz-card, .results-card{padding:22px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside>
+    <div class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M19.5 3.5L24.5 8.5L11 22L5 23L6 17L19.5 3.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+          <path d="M16.3 6.3L21.5 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M3 26C6.2 24.4 9.2 24.4 12 26" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="logo-text">
+        EstudeAI
+        <span class="logo-tag">3º ano · ENEM</span>
+      </span>
+    </div>
+
+    <div class="nav-label">Menu</div>
+    <nav class="side-nav">
+      <a class="side-link" href="estudeai-dashboard.html">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="12" width="8" height="9" rx="1.5"/><rect x="3" y="15" width="8" height="6" rx="1.5"/></svg></span>
+        Dashboard
+      </a>
+      <a class="side-link" href="#">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5V6a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v14"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H19"/></svg></span>
+        Trilhas
+      </a>
+      <a class="side-link active" href="estudeai-simulados.html">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="2"/><circle cx="9" cy="16" r="2"/><circle cx="16" cy="9" r="2"/><circle cx="16" cy="16" r="2"/></svg></span>
+        Simulados
+      </a>
+      <a class="side-link" href="#">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M12 20V4M20 20v-7"/></svg></span>
+        Desempenho
+      </a>
+      <a class="side-link" href="#">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/></svg></span>
+        Perfil
+      </a>
+    </nav>
+
+    <div class="side-foot">
+      <button class="theme-toggle-side" onclick="toggleTheme()">
+        <svg class="icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+        <span id="theme-label">Modo escuro</span>
+      </button>
+      <div class="profile-mini">
+        <div class="avatar">A</div>
+        <div>
+          <div class="name">Aluno(a)</div>
+          <div class="meta">Ano · Vestibular</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main>
+    <a href="estudeai-simulados.html" class="back-link">← Simulados</a>
+    <div class="greeting-eyebrow">ENEM 2019 · Seleção oficial</div>
+    <h1>Simulado</h1>
+
+    <div id="quiz-view">
+      <div class="quiz-progress">
+        <div class="quiz-progress-top">
+          <span class="q-position" id="q-position">Questão 1 de 5</span>
+          <span class="tag" id="q-area">Linguagens</span>
+        </div>
+        <div class="quiz-dots" id="quiz-dots"></div>
+      </div>
+
+      <div class="card quiz-card">
+        <div class="quiz-context" id="q-context" style="display:none;"></div>
+        <p class="quiz-enunciado" id="q-enunciado"></p>
+        <div class="quiz-options" id="q-options"></div>
+      </div>
+
+      <div class="quiz-nav">
+        <button class="btn btn-ghost" id="btn-prev" onclick="goPrev()">← Anterior</button>
+        <button class="btn btn-solid" id="btn-next" onclick="goNext()">Próxima →</button>
+      </div>
+    </div>
+
+    <div id="results-view" style="display:none;">
+      <div class="card results-card">
+        <div class="results-hero">
+          <div class="results-score"><span id="score-num">0</span><span class="of" id="score-of">/ 5</span></div>
+          <div class="results-label">questões corretas</div>
+        </div>
+        <div class="results-list" id="results-list"></div>
+        <div class="results-actions">
+          <button class="btn btn-ghost" onclick="restartQuiz()">Refazer simulado</button>
+          <a href="estudeai-simulados.html" class="btn btn-solid">Voltar aos simulados</a>
+        </div>
+      </div>
+      <p class="results-source">Questões oficiais do ENEM 2019 (INEP), reproduzidas em domínio público para fins educacionais.</p>
+    </div>
+  </main>
+</div>
+
+<script>
+function toggleTheme(){
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-label').textContent = isDark ? 'Modo escuro' : 'Modo claro';
+}
+
+const questions = [
+  {
+    area: 'Linguagens',
+    numero: 'Questão 6',
+    textoBase: '"Um amor desse / Era 24 horas lado a lado / Um radar na pele, aquele sentimento alucinado..." — trecho da canção "Coração pede socorro", de Azevedo, Leão e Quadros, composta para uma campanha de combate à violência contra a mulher.',
+    enunciado: 'A estratégia argumentativa empregada nessa canção para tratar do tema da violência contra a mulher consiste em',
+    alternativas: [
+      { letra: 'A', texto: 'revelar a submissão das mulheres à violência que sofrem.' },
+      { letra: 'B', texto: 'reforçar a importância de ouvir os apelos de mulheres agredidas.' },
+      { letra: 'C', texto: 'explorar a ambiguidade de sentidos para evidenciar que dominação não é amor.' },
+      { letra: 'D', texto: 'expor a importância da denúncia da violência doméstica.' },
+      { letra: 'E', texto: 'naturalizar situações de opressão vividas numa sociedade patriarcal.' }
+    ],
+    correta: 'C'
+  },
+  {
+    area: 'Linguagens',
+    numero: 'Questão 11',
+    textoBase: 'Cartaz de campanha com a imagem de um par de sapatos e o texto: "Vamos calçar os sapatos dos refugiados e dar o primeiro passo para entender sua situação."',
+    enunciado: 'Nessa peça publicitária, a articulação entre a imagem do sapato e o texto verbal tem como objetivo',
+    alternativas: [
+      { letra: 'A', texto: 'criticar as condições de vida difíceis enfrentadas pelos refugiados.' },
+      { letra: 'B', texto: 'revelar a longa trajetória percorrida pelos refugiados.' },
+      { letra: 'C', texto: 'incentivar campanhas de doação de calçados para refugiados.' },
+      { letra: 'D', texto: 'denunciar a situação de necessidade vivida pelos refugiados.' },
+      { letra: 'E', texto: 'simbolizar a necessidade de adesão à causa dos refugiados.' }
+    ],
+    correta: 'E'
+  },
+  {
+    area: 'Ciências Humanas',
+    numero: 'Questão 46',
+    textoBase: '"A hospitalidade pura consiste em acolher aquele que chega antes de lhe impor condições, antes de saber e indagar o que quer que seja, ainda que seja um nome ou um \'documento\' de identidade." — DERRIDA, J. Papel-máquina.',
+    enunciado: 'Associado ao contexto migratório contemporâneo, o conceito de hospitalidade proposto pelo autor impõe a necessidade de',
+    alternativas: [
+      { letra: 'A', texto: 'anulação da diferença.' },
+      { letra: 'B', texto: 'cristalização da biografia.' },
+      { letra: 'C', texto: 'incorporação da alteridade.' },
+      { letra: 'D', texto: 'supressão da comunicação.' },
+      { letra: 'E', texto: 'verificação da proveniência.' }
+    ],
+    correta: 'C'
+  },
+  {
+    area: 'Ciências Humanas',
+    numero: 'Questão 47',
+    textoBase: '"Em sentido geral e fundamental, Direito é a técnica da coexistência humana, isto é, a técnica voltada a tornar possível a coexistência dos homens." — ABBAGNANO, N. Dicionário de Filosofia.',
+    enunciado: 'O sentido geral e fundamental do Direito, segundo o texto, refere-se à',
+    alternativas: [
+      { letra: 'A', texto: 'aplicação de códigos legais.' },
+      { letra: 'B', texto: 'regulação do convívio social.' },
+      { letra: 'C', texto: 'legitimação de decisões políticas.' },
+      { letra: 'D', texto: 'mediação de conflitos econômicos.' },
+      { letra: 'E', texto: 'representação da autoridade constituída.' }
+    ],
+    correta: 'B'
+  },
+  {
+    area: 'Matemática',
+    numero: 'Questão 137',
+    textoBase: null,
+    enunciado: 'Uma fábrica monta trens de brinquedo compostos por uma locomotiva e 12 vagões, cujas posições são fixas e numeradas de 1 a 12. Desses 12 vagões, 4 são vermelhos, 3 são azuis, 3 são verdes e 2 são amarelos. De quantas formas diferentes esses trens podem ser montados, considerando apenas as variações de cores entre as posições dos vagões?',
+    alternativas: [
+      { letra: 'A', texto: 'C(12,4) × C(8,3) × C(5,3) × C(2,2)' },
+      { letra: 'B', texto: '12! / (4! × 3! × 3! × 2!)' },
+      { letra: 'C', texto: 'C(12,4) + C(12,3) + C(12,3) + C(12,2)' },
+      { letra: 'D', texto: '4! × 3! × 3! × 2!' },
+      { letra: 'E', texto: 'C(12,12)' }
+    ],
+    correta: 'A'
+  }
+];
+
+let current = 0;
+const answers = {};
+
+function renderDots(){
+  const dots = document.getElementById('quiz-dots');
+  dots.innerHTML = '';
+  questions.forEach((q, i) => {
+    const d = document.createElement('span');
+    d.className = 'quiz-dot' + (answers[i] ? ' answered' : '') + (i === current ? ' current' : '');
+    d.textContent = i + 1;
+    dots.appendChild(d);
+  });
+}
+
+function renderQuestion(){
+  const q = questions[current];
+  document.getElementById('q-position').textContent = `Questão ${current + 1} de ${questions.length}`;
+  document.getElementById('q-area').textContent = q.area;
+
+  const ctx = document.getElementById('q-context');
+  if(q.textoBase){
+    ctx.style.display = 'block';
+    ctx.textContent = q.textoBase;
+  } else {
+    ctx.style.display = 'none';
+  }
+
+  document.getElementById('q-enunciado').textContent = `${q.numero} (ENEM 2019) — ${q.enunciado}`;
+
+  const opts = document.getElementById('q-options');
+  opts.innerHTML = '';
+  q.alternativas.forEach(alt => {
+    const row = document.createElement('div');
+    row.className = 'option' + (answers[current] === alt.letra ? ' selected' : '');
+    row.onclick = () => selectOption(alt.letra);
+    row.innerHTML = `<span class="opt-letter">${alt.letra}</span><span class="opt-text">${alt.texto}</span>`;
+    opts.appendChild(row);
+  });
+
+  document.getElementById('btn-prev').disabled = current === 0;
+  document.getElementById('btn-next').textContent = current === questions.length - 1 ? 'Finalizar simulado →' : 'Próxima →';
+
+  renderDots();
+}
+
+function selectOption(letra){
+  answers[current] = letra;
+  renderQuestion();
+}
+
+function goPrev(){
+  if(current > 0){ current--; renderQuestion(); }
+}
+
+function goNext(){
+  if(current < questions.length - 1){ current++; renderQuestion(); }
+  else { finishQuiz(); }
+}
+
+function finishQuiz(){
+  let score = 0;
+  questions.forEach((q, i) => { if(answers[i] === q.correta) score++; });
+
+  document.getElementById('quiz-view').style.display = 'none';
+  document.getElementById('results-view').style.display = 'block';
+  document.getElementById('score-num').textContent = score;
+  document.getElementById('score-of').textContent = `/ ${questions.length}`;
+
+  const list = document.getElementById('results-list');
+  list.innerHTML = '';
+  questions.forEach((q, i) => {
+    const given = answers[i];
+    const isCorrect = given === q.correta;
+    const dotClass = !given ? '' : (isCorrect ? 'correct' : 'wrong');
+    const row = document.createElement('div');
+    row.className = 'result-row';
+    row.innerHTML = `
+      <span class="result-dot ${dotClass}"></span>
+      <div>
+        <div class="result-q">${q.numero} · ${q.area}</div>
+        <div class="result-detail">Sua resposta: <b>${given || '—'}</b> · Gabarito: <b>${q.correta}</b></div>
+      </div>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function restartQuiz(){
+  current = 0;
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.getElementById('results-view').style.display = 'none';
+  document.getElementById('quiz-view').style.display = 'block';
+  renderQuestion();
+}
+
+renderQuestion();
+</script>
+
+</body>
+</html>

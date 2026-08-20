@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EstudeAI — Desempenho</title>
+<title>EstudeAI — Perfil</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -56,18 +56,14 @@
   button{font-family:inherit;cursor:pointer;}
   aside, .card, .btn, input, select{transition:background-color .25s ease, border-color .25s ease, color .25s ease;}
 
-  .bubbles{display:flex;gap:6px;}
-  .bubble{width:11px;height:11px;border-radius:50%;border:1.4px solid currentColor;display:inline-block;}
-  .bubble.filled{background:currentColor;}
-
   .btn{font-family:var(--font-body);font-weight:600;font-size:14px;padding:10px 18px;border-radius:100px;border:1.5px solid transparent;}
   .btn-solid{background:var(--text-ink);color:var(--paper);}
   .btn-solid:hover{opacity:.85;}
   .btn-ghost{color:var(--text-ink);border-color:var(--border-soft);background:transparent;}
   .btn-ghost:hover{background:var(--paper);}
-  .btn-sm{padding:7px 14px;font-size:13px;}
+  .btn-danger{color:var(--correction);border-color:var(--correction);background:transparent;}
+  .btn-danger:hover{background:rgba(214,69,80,.08);}
 
-  .tag{font-size:11.5px;padding:4px 10px;border-radius:100px;border:1px solid var(--border-soft);color:var(--text-muted);}
   .card{background:var(--card);border:1px solid var(--border-soft);border-radius:var(--radius-card);}
 
   /* ---------- layout ---------- */
@@ -133,52 +129,54 @@
   .profile-mini .meta{font-size:11.5px;color:var(--text-on-ink-muted);}
 
   /* ---------- main ---------- */
-  main{padding:36px 44px 60px;max-width:1180px;}
+  main{padding:36px 44px 60px;max-width:720px;}
   .greeting-eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:8px;}
-  h1{font-family:var(--font-display);font-size:30px;font-weight:600;margin:0 0 10px;letter-spacing:-.01em;}
-  .page-sub{font-size:15px;color:var(--text-muted);max-width:600px;margin:0 0 32px;}
-  h2.section-title{font-family:var(--font-display);font-size:19px;font-weight:600;margin:0 0 16px;}
+  h1{font-family:var(--font-display);font-size:30px;font-weight:600;margin:0 0 32px;letter-spacing:-.01em;}
 
-  /* ---------- stats ---------- */
-  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:36px;}
-  .stat-card{padding:20px 22px;}
-  .stat-card .label{font-size:12.5px;color:var(--text-muted);margin-bottom:10px;}
-  .stat-card .value{font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--text-ink);}
-  .stat-card .sub{font-size:12.5px;color:var(--text-muted);margin-top:6px;}
+  /* ---------- profile header card ---------- */
+  .profile-hero{display:flex;align-items:center;gap:20px;padding:26px;margin-bottom:24px;}
+  .avatar-lg{
+    width:64px;height:64px;border-radius:50%;background:var(--gold-deep);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:24px;flex-shrink:0;
+    font-family:var(--font-display);
+  }
+  .profile-hero h2{font-family:var(--font-display);font-size:21px;font-weight:600;margin:0 0 4px;}
+  .profile-hero .email{font-size:13.5px;color:var(--text-muted);margin-bottom:8px;}
+  .profile-hero .tags{display:flex;gap:8px;}
+  .tag{font-size:11.5px;padding:4px 10px;border-radius:100px;border:1px solid var(--border-soft);color:var(--text-muted);}
 
-  /* ---------- subjects ---------- */
-  .subjects{display:flex;flex-direction:column;gap:12px;margin-bottom:36px;}
-  .subject-row{display:flex;align-items:center;gap:16px;padding:16px 20px;}
-  .subject-row .sname{width:110px;flex-shrink:0;font-size:14.5px;font-weight:600;}
-  .subject-row .sbar{flex:1;height:8px;border-radius:100px;background:var(--paper);border:1px solid var(--border-soft);overflow:hidden;}
-  .subject-row .sfill{height:100%;border-radius:100px;background:var(--gold);}
-  .subject-row .spct{width:56px;text-align:right;font-family:var(--font-mono);font-size:12.5px;color:var(--text-muted);flex-shrink:0;}
+  /* ---------- form card ---------- */
+  .form-card{padding:26px;margin-bottom:20px;}
+  .form-card h3{font-family:var(--font-display);font-size:17px;font-weight:600;margin:0 0 18px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:13px;color:var(--text-muted);margin-bottom:6px;font-weight:600;}
+  .field input, .field select{
+    width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid var(--border-soft);
+    background:var(--paper);font-family:var(--font-body);font-size:14.5px;color:var(--text-ink);
+  }
+  .field input:focus, .field select:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold-deep);}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .save-row{display:flex;align-items:center;gap:14px;margin-top:6px;}
+  .save-msg{font-size:13px;color:var(--good);opacity:0;transition:opacity .3s ease;}
+  .save-msg.show{opacity:1;}
 
-  /* ---------- simulados ---------- */
-  .sim-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px;}
-  .sim-card{padding:24px 26px;}
-  .sim-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px;}
-  .sim-card h3{font-family:var(--font-display);font-size:18px;font-weight:600;margin:0 0 4px;}
-  .sim-card .sim-area{font-size:12.5px;color:var(--text-muted);}
-  .sim-status{font-size:11px;padding:4px 10px;border-radius:100px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.03em;flex-shrink:0;}
-  .sim-status.ok{background:rgba(61,122,84,.12);color:var(--good);}
-  .sim-status.warn{background:rgba(214,69,80,.12);color:var(--correction);}
-  .sim-status.pending{background:var(--paper);color:var(--text-muted);border:1px solid var(--border-soft);}
-  .sim-score{font-family:var(--font-mono);font-size:32px;font-weight:700;color:var(--gold-deep);margin-bottom:4px;}
-  .sim-score .of{font-size:16px;color:var(--text-muted);}
-  .sim-pct{font-size:13px;color:var(--text-muted);margin-bottom:18px;}
+  .danger-card{padding:22px 26px;}
+  .danger-card h3{font-family:var(--font-display);font-size:16px;font-weight:600;margin:0 0 6px;}
+  .danger-card p{font-size:13px;color:var(--text-muted);margin:0 0 16px;max-width:480px;}
+  .danger-actions{display:flex;gap:12px;flex-wrap:wrap;}
+
+  .empty-account{padding:44px 36px;text-align:center;}
+  .empty-account p{font-size:14px;color:var(--text-muted);margin:0 0 20px;}
 
   @media(max-width:980px){
     .app{grid-template-columns:1fr;}
     aside{position:relative;height:auto;flex-direction:row;align-items:center;padding:16px 20px;}
     .side-nav,.side-foot{display:none;}
     main{padding:28px 22px 48px;}
-    .stats-row{grid-template-columns:1fr;}
-    .sim-cards{grid-template-columns:1fr;}
   }
-  @media(max-width:600px){
-    .subject-row{flex-wrap:wrap;}
-    .subject-row .sname{width:100%;}
+  @media(max-width:560px){
+    .field-row{grid-template-columns:1fr;}
+    .profile-hero{flex-direction:column;text-align:center;}
   }
 </style>
 </head>
@@ -214,11 +212,11 @@
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="2"/><circle cx="9" cy="16" r="2"/><circle cx="16" cy="9" r="2"/><circle cx="16" cy="16" r="2"/></svg></span>
         Simulados
       </a>
-      <a class="side-link active" href="estudeai-desempenho.html">
+      <a class="side-link" href="estudeai-desempenho.html">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M12 20V4M20 20v-7"/></svg></span>
         Desempenho
       </a>
-      <a class="side-link" href="estudeai-perfil.html">
+      <a class="side-link active" href="estudeai-perfil.html">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/></svg></span>
         Perfil
       </a>
@@ -241,33 +239,73 @@
   </aside>
 
   <main>
-    <div class="greeting-eyebrow">Desempenho</div>
-    <h1>Seu desempenho</h1>
-    <p class="page-sub">Como você está indo na trilha e nos simulados — tudo num só lugar.</p>
+    <div class="greeting-eyebrow">Perfil</div>
+    <h1>Sua conta</h1>
 
-    <div class="stats-row">
-      <div class="card stat-card">
-        <div class="label">Módulos concluídos</div>
-        <div class="value" id="stat-modulos">0/5</div>
-        <div class="sub">disponíveis na sua trilha por enquanto</div>
-      </div>
-      <div class="card stat-card">
-        <div class="label">Simulados realizados</div>
-        <div class="value" id="stat-simulados">0/2</div>
-        <div class="sub" id="stat-simulados-sub">nenhum simulado feito ainda</div>
-      </div>
-      <div class="card stat-card">
-        <div class="label">Média nos simulados</div>
-        <div class="value" id="stat-media">—</div>
-        <div class="sub">acertos sobre o total de questões</div>
+    <div id="no-account-view" style="display:none;">
+      <div class="card empty-account">
+        <p>Você ainda não criou uma conta neste navegador.</p>
+        <a href="estudeai-menu-principal.html#auth" class="btn btn-solid">Criar conta</a>
       </div>
     </div>
 
-    <h2 class="section-title">Desempenho por matéria</h2>
-    <div class="subjects card" id="subjects-card" style="padding:8px 20px;"></div>
+    <div id="account-view" style="display:none;">
+      <div class="card profile-hero">
+        <div class="avatar-lg" id="hero-avatar">A</div>
+        <div>
+          <h2 id="hero-name">Aluno(a)</h2>
+          <div class="email" id="hero-email">—</div>
+          <div class="tags">
+            <span class="tag" id="hero-ano">Ano</span>
+            <span class="tag" id="hero-vestibular">Vestibular</span>
+          </div>
+        </div>
+      </div>
 
-    <h2 class="section-title">Simulados</h2>
-    <div class="sim-cards" id="sim-cards"></div>
+      <form class="card form-card" id="profile-form">
+        <h3>Editar dados</h3>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-nome">Nome</label>
+            <input type="text" id="f-nome" required>
+          </div>
+          <div class="field">
+            <label for="f-ano">Ano escolar</label>
+            <select id="f-ano">
+              <option>1º ano</option>
+              <option>2º ano</option>
+              <option>3º ano</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-email">E-mail</label>
+          <input type="email" id="f-email" required>
+        </div>
+        <div class="field">
+          <label for="f-vestibular">Vestibular alvo</label>
+          <select id="f-vestibular">
+            <option>ENEM</option>
+            <option>FUVEST</option>
+            <option>UNICAMP</option>
+            <option>Ainda não sei</option>
+          </select>
+        </div>
+        <div class="save-row">
+          <button type="submit" class="btn btn-solid">Salvar alterações</button>
+          <span class="save-msg" id="save-msg">Alterações salvas.</span>
+        </div>
+      </form>
+
+      <div class="card danger-card">
+        <h3>Conta</h3>
+        <p>Sair remove apenas o login deste navegador — seu progresso na trilha e nos simulados continua salvo. Apagar o progresso zera módulos concluídos e notas dos simulados, sem excluir a conta.</p>
+        <div class="danger-actions">
+          <button class="btn btn-ghost" onclick="sair()">Sair</button>
+          <button class="btn btn-danger" onclick="apagarProgresso()">Apagar progresso</button>
+        </div>
+      </div>
+    </div>
   </main>
 </div>
 
@@ -299,126 +337,66 @@ function applyUserProfile(){
 }
 applyUserProfile();
 
-const CURRICULO_PRIMEIRO_MODULO = {
-  'Matemática': { '1º ano': 'Conjuntos e Funções', '2º ano': 'Funções Quadráticas', '3º ano': 'Geometria Analítica' },
-  'Português': { '1º ano': 'Interpretação de Texto', '2º ano': 'Sintaxe', '3º ano': 'Literatura Contemporânea' },
-  'Química': { '1º ano': 'Estrutura Atômica', '2º ano': 'Estequiometria', '3º ano': 'Química Orgânica' },
-  'Biologia': { '1º ano': 'Citologia', '2º ano': 'Genética', '3º ano': 'Biotecnologia' },
-  'História': { '1º ano': 'Pré-História e Antiguidade', '2º ano': 'Brasil Colônia', '3º ano': 'Era Vargas e Ditadura Militar' }
-};
-const MATERIA_SLUG = { 'Matemática': 'matematica', 'Português': 'portugues', 'Química': 'quimica', 'Biologia': 'biologia', 'História': 'historia' };
-const ANO_NUM = { '1º ano': '1', '2º ano': '2', '3º ano': '3' };
-
-function getModulosConcluidos(){
-  try { return JSON.parse(localStorage.getItem('estudeai_modulos_concluidos') || '[]'); }
-  catch(e){ return []; }
-}
-
-function renderSubjects(){
+function renderPerfil(){
   const user = getUser();
-  const ano = (user && user.ano) || '3º ano';
-  const anoNum = ANO_NUM[ano] || '3';
-  const concluidos = getModulosConcluidos();
 
-  const container = document.getElementById('subjects-card');
-  container.innerHTML = '';
-  let totalConcluidos = 0;
+  if(!user || !user.nome){
+    document.getElementById('no-account-view').style.display = 'block';
+    document.getElementById('account-view').style.display = 'none';
+    return;
+  }
 
-  Object.keys(MATERIA_SLUG).forEach(materia => {
-    const slug = MATERIA_SLUG[materia];
-    const id = `${slug}-${anoNum}`;
-    const concluido = concluidos.includes(id);
-    if(concluido) totalConcluidos++;
-    const pct = concluido ? 33 : 0;
+  document.getElementById('no-account-view').style.display = 'none';
+  document.getElementById('account-view').style.display = 'block';
 
-    const row = document.createElement('div');
-    row.className = 'subject-row';
-    row.innerHTML = `
-      <span class="sname">${materia}</span>
-      <div class="sbar"><div class="sfill" style="width:${pct}%"></div></div>
-      <span class="spct">${pct}%</span>
-    `;
-    container.appendChild(row);
-  });
+  const inicial = user.nome.trim().charAt(0).toUpperCase();
+  document.getElementById('hero-avatar').textContent = inicial;
+  document.getElementById('hero-name').textContent = user.nome;
+  document.getElementById('hero-email').textContent = user.email || '—';
+  document.getElementById('hero-ano').textContent = user.ano;
+  document.getElementById('hero-vestibular').textContent = user.vestibular;
 
-  document.getElementById('stat-modulos').textContent = `${totalConcluidos}/5`;
+  document.getElementById('f-nome').value = user.nome;
+  document.getElementById('f-email').value = user.email || '';
+  document.getElementById('f-ano').value = user.ano;
+  document.getElementById('f-vestibular').value = user.vestibular;
+}
+renderPerfil();
+
+document.getElementById('profile-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  const user = getUser() || {};
+  user.nome = document.getElementById('f-nome').value.trim();
+  user.email = document.getElementById('f-email').value.trim();
+  user.ano = document.getElementById('f-ano').value;
+  user.vestibular = document.getElementById('f-vestibular').value;
+
+  try { localStorage.setItem('estudeai_user', JSON.stringify(user)); } catch(err){}
+
+  applyUserProfile();
+  renderPerfil();
+
+  const msg = document.getElementById('save-msg');
+  msg.classList.add('show');
+  setTimeout(() => msg.classList.remove('show'), 2500);
+});
+
+function sair(){
+  try { localStorage.removeItem('estudeai_user'); } catch(e){}
+  window.location.href = 'estudeai-menu-principal.html';
 }
 
-function renderSimulados(){
-  const container = document.getElementById('sim-cards');
-  container.innerHTML = '';
-
-  let sim1Score = null, sim1Total = 5;
-  let sim2Score = null, sim2Total = 4;
-  try {
-    sim1Score = localStorage.getItem('estudeai_sim1_score');
-    sim1Total = Number(localStorage.getItem('estudeai_sim1_total') || 5);
-    sim2Score = localStorage.getItem('estudeai_sim2_score');
-    sim2Total = Number(localStorage.getItem('estudeai_sim2_total') || 4);
-  } catch(e){}
-
-  const sims = [
-    { nome: 'Simulado 1', area: 'ENEM 2019 — Seleção oficial', score: sim1Score, total: sim1Total, passScore: 3, link: 'estudeai-simulado-quiz.html' },
-    { nome: 'Simulado 2', area: 'ENEM 2019 — Natureza e Matemática', score: sim2Score, total: sim2Total, passScore: null, link: 'estudeai-simulado-quiz-2.html' }
+function apagarProgresso(){
+  const ok = confirm('Isso vai zerar seus módulos concluídos, notas dos simulados e atividade recente. Sua conta continua. Confirmar?');
+  if(!ok) return;
+  const chaves = [
+    'estudeai_sim1_score', 'estudeai_sim1_total',
+    'estudeai_sim2_score', 'estudeai_sim2_total',
+    'estudeai_modulos_concluidos', 'estudeai_activity_log'
   ];
-
-  let realizados = 0;
-  let somaPct = 0;
-  let comNota = 0;
-
-  sims.forEach(sim => {
-    const card = document.createElement('div');
-    card.className = 'card sim-card';
-
-    if(sim.score === null){
-      card.innerHTML = `
-        <div class="sim-card-head">
-          <div>
-            <h3>${sim.nome}</h3>
-            <div class="sim-area">${sim.area}</div>
-          </div>
-          <span class="sim-status pending">Não feito</span>
-        </div>
-        <div class="sim-score">—</div>
-        <div class="sim-pct">Você ainda não tentou esse simulado.</div>
-        <a href="${sim.link}" class="btn btn-solid btn-sm">Iniciar simulado</a>
-      `;
-    } else {
-      realizados++;
-      const score = Number(sim.score);
-      const pct = Math.round((score / sim.total) * 100);
-      somaPct += pct;
-      comNota++;
-      const passou = sim.passScore !== null ? score >= sim.passScore : null;
-      const statusClass = passou === null ? 'ok' : (passou ? 'ok' : 'warn');
-      const statusText = passou === null ? 'Feito' : (passou ? 'Aprovado' : 'Abaixo do mínimo');
-
-      card.innerHTML = `
-        <div class="sim-card-head">
-          <div>
-            <h3>${sim.nome}</h3>
-            <div class="sim-area">${sim.area}</div>
-          </div>
-          <span class="sim-status ${statusClass}">${statusText}</span>
-        </div>
-        <div class="sim-score">${score}<span class="of">/${sim.total}</span></div>
-        <div class="sim-pct">${pct}% de acerto (melhor tentativa)</div>
-        <a href="${sim.link}" class="btn btn-ghost btn-sm">Refazer</a>
-      `;
-    }
-
-    container.appendChild(card);
-  });
-
-  document.getElementById('stat-simulados').textContent = `${realizados}/2`;
-  document.getElementById('stat-simulados-sub').textContent = realizados === 0
-    ? 'nenhum simulado feito ainda'
-    : `${realizados} de 2 simulados disponíveis`;
-  document.getElementById('stat-media').textContent = comNota > 0 ? `${Math.round(somaPct / comNota)}%` : '—';
+  try { chaves.forEach(c => localStorage.removeItem(c)); } catch(e){}
+  alert('Progresso apagado.');
 }
-
-renderSubjects();
-renderSimulados();
 </script>
 
 </body>

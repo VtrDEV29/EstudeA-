@@ -491,6 +491,14 @@ function goNext(){
   else { finishQuiz(); }
 }
 
+function logActivity(entry){
+  try {
+    const log = JSON.parse(localStorage.getItem('estudeai_activity_log') || '[]');
+    log.unshift(Object.assign({ ts: Date.now() }, entry));
+    localStorage.setItem('estudeai_activity_log', JSON.stringify(log.slice(0, 20)));
+  } catch(e){}
+}
+
 function finishQuiz(){
   let score = 0;
   questions.forEach((q, i) => { if(answers[i] === q.correta) score++; });
@@ -502,6 +510,11 @@ function finishQuiz(){
       localStorage.setItem('estudeai_sim2_total', questions.length);
     }
   } catch(e){}
+
+  logActivity({
+    label: `Simulado 2 (ENEM 2019): ${score}/${questions.length} acertos`,
+    correta: true
+  });
 
   document.getElementById('quiz-view').style.display = 'none';
   document.getElementById('results-view').style.display = 'block';

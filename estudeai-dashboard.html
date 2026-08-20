@@ -278,15 +278,15 @@
     <div class="stats-row">
       <div class="stat-card">
         <div class="label">Sequência de estudo</div>
-        <div class="value">—</div>
+        <div class="value" id="stat-sequencia">—</div>
       </div>
       <div class="stat-card">
         <div class="label">Simulados feitos</div>
-        <div class="value">—</div>
+        <div class="value" id="stat-simulados-feitos">—</div>
       </div>
       <div class="stat-card">
         <div class="label">Média geral</div>
-        <div class="value">—</div>
+        <div class="value" id="stat-media-geral">—</div>
       </div>
       <div class="stat-card">
         <div class="label">Horas estudadas</div>
@@ -350,8 +350,10 @@
         <div class="card-head">
           <h2>Atividade recente</h2>
         </div>
-        <div class="empty-state">
-          <p>Nenhuma atividade registrada ainda.</p>
+        <div id="activity-list">
+          <div class="empty-state">
+            <p>Nenhuma atividade registrada ainda.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -415,6 +417,72 @@ function applyUserProfile(){
   if(trilhaDescEl) trilhaDescEl.textContent = `Você está na frente de Matemática. Comece pelo primeiro módulo da sua trilha do ${ano}.`;
 }
 applyUserProfile();
+
+function tempoRelativo(ts){
+  const diffMin = Math.floor((Date.now() - ts) / 60000);
+  if(diffMin < 1) return 'agora mesmo';
+  if(diffMin < 60) return `${diffMin} min atrás`;
+  const diffH = Math.floor(diffMin / 60);
+  if(diffH < 24) return `${diffH}h atrás`;
+  const diffD = Math.floor(diffH / 24);
+  if(diffD === 1) return 'ontem';
+  return `${diffD} dias atrás`;
+}
+
+function calcularSequencia(log){
+  if(log.length === 0) return 0;
+  const dias = [...new Set(log.map(e => new Date(e.ts).toDateString()))].map(d => new Date(d)).sort((a, b) => b - a);
+  let streak = 1;
+  for(let i = 0; i < dias.length - 1; i++){
+    const diffDias = Math.round((dias[i] - dias[i + 1]) / 86400000);
+    if(diffDias === 1) streak++; else break;
+  }
+  return streak;
+}
+
+function renderDesempenho(){
+  let log = [];
+  let sim1Score = null, sim1Total = 5;
+  let sim2Score = null, sim2Total = 4;
+  try {
+    log = JSON.parse(localStorage.getItem('estudeai_activity_log') || '[]');
+    sim1Score = localStorage.getItem('estudeai_sim1_score');
+    sim1Total = Number(localStorage.getItem('estudeai_sim1_total') || 5);
+    sim2Score = localStorage.getItem('estudeai_sim2_score');
+    sim2Total = Number(localStorage.getItem('estudeai_sim2_total') || 4);
+  } catch(e){}
+
+  const simuladosFeitos = (sim1Score !== null ? 1 : 0) + (sim2Score !== null ? 1 : 0);
+  document.getElementById('stat-simulados-feitos').textContent = `${simuladosFeitos}/2`;
+
+  const pcts = [];
+  if(sim1Score !== null) pcts.push((Number(sim1Score) / sim1Total) * 100);
+  if(sim2Score !== null) pcts.push((Number(sim2Score) / sim2Total) * 100);
+  document.getElementById('stat-media-geral').textContent = pcts.length > 0
+    ? `${Math.round(pcts.reduce((a, b) => a + b, 0) / pcts.length)}%`
+    : '—';
+
+  const streak = calcularSequencia(log);
+  document.getElementById('stat-sequencia').textContent = streak > 0 ? `${streak} dia${streak > 1 ? 's' : ''}` : '—';
+
+  if(log.length > 0){
+    const list = document.getElementById('activity-list');
+    list.innerHTML = '';
+    log.slice(0, 4).forEach(entry => {
+      const item = document.createElement('div');
+      item.className = 'activity-item';
+      item.innerHTML = `
+        <div class="activity-dot${entry.correta ? '' : ' wrong'}"></div>
+        <div>
+          <div class="a-title">${entry.label}</div>
+          <div class="a-time">${tempoRelativo(entry.ts)}</div>
+        </div>
+      `;
+      list.appendChild(item);
+    });
+  }
+}
+renderDesempenho();
 
 function nextEnemDate(){
   const now = new Date();

@@ -328,11 +328,27 @@ const ESTAGIO_POR_ANO = {
   '3º ano': 'Reta final'
 };
 
+const MATERIA_SLUG = {
+  'Matemática': 'matematica',
+  'Português': 'portugues',
+  'Química': 'quimica',
+  'Biologia': 'biologia',
+  'História': 'historia'
+};
+
+const ANO_NUM = { '1º ano': '1', '2º ano': '2', '3º ano': '3' };
+
+function getModulosConcluidos(){
+  try { return JSON.parse(localStorage.getItem('estudeai_modulos_concluidos') || '[]'); }
+  catch(e){ return []; }
+}
+
 function renderTrilha(){
   const user = getUser();
   const ano = (user && user.ano) || '3º ano';
   const vestibular = (user && user.vestibular) || 'ENEM';
   const estagio = ESTAGIO_POR_ANO[ano] || 'Reta final';
+  const concluidos = getModulosConcluidos();
 
   document.getElementById('trilha-title').textContent = `Trilha ${ano} — ${estagio}`;
   document.getElementById('trilha-sub').textContent = `Conteúdo organizado por matéria, no ritmo do ${ano} e com foco em ${vestibular}.`;
@@ -346,30 +362,43 @@ function renderTrilha(){
 
   Object.keys(CURRICULO).forEach(materia => {
     const modulos = CURRICULO[materia][ano] || CURRICULO[materia]['3º ano'];
+    const slug = MATERIA_SLUG[materia];
+    const anoNum = ANO_NUM[ano] || '3';
+    const concluidosNestaMateria = modulos.filter((_, i) => i === 0 && concluidos.includes(`${slug}-${anoNum}`)).length;
 
     const card = document.createElement('div');
     card.className = 'card subject-card';
 
     const head = document.createElement('div');
     head.className = 'subject-head';
-    head.innerHTML = `<h3>${materia}</h3><span class="subject-progress-label">0/${modulos.length} módulos</span>`;
+    head.innerHTML = `<h3>${materia}</h3><span class="subject-progress-label">${concluidosNestaMateria}/${modulos.length} módulos</span>`;
     card.appendChild(head);
 
     const bar = document.createElement('div');
     bar.className = 'progress-bar';
-    bar.innerHTML = `<div class="fill" style="width:0%"></div>`;
+    bar.innerHTML = `<div class="fill" style="width:${Math.round((concluidosNestaMateria / modulos.length) * 100)}%"></div>`;
     card.appendChild(bar);
 
     modulos.forEach((nome, i) => {
+      const atividadeId = i === 0 ? `${slug}-${anoNum}` : null;
+      const concluido = atividadeId && concluidos.includes(atividadeId);
+
       const row = document.createElement('div');
       row.className = 'module-row';
+
+      const bubble = concluido ? '<span class="bubble filled"></span>' : '<span class="bubble"></span>';
+      const status = concluido ? 'concluído' : (atividadeId ? 'não iniciado' : 'em breve');
+      const botao = atividadeId
+        ? `<a href="estudeai-atividade.html?id=${atividadeId}" class="btn ${concluido ? 'btn-ghost' : 'btn-solid'} btn-sm">${concluido ? 'Revisar' : 'Começar'}</a>`
+        : `<button class="btn btn-ghost btn-sm" disabled>Em breve</button>`;
+
       row.innerHTML = `
-        <span class="bubble"></span>
+        ${bubble}
         <div class="module-info">
           <div class="module-name">${nome}</div>
-          <div class="module-meta">Módulo ${i + 1} de ${modulos.length} · não iniciado</div>
+          <div class="module-meta">Módulo ${i + 1} de ${modulos.length} · ${status}</div>
         </div>
-        <button class="btn btn-ghost btn-sm">Começar</button>
+        ${botao}
       `;
       card.appendChild(row);
     });

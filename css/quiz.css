@@ -1,0 +1,56 @@
+/* ==========================================================================
+   EstudeAI — Mecânica de quiz
+   Usada pelos simulados (estudeai-simulado-quiz.html, -quiz-2.html) e
+   pelas atividades da trilha (estudeai-atividade.html).
+   ========================================================================== */
+
+.quiz-progress{max-width:680px;margin:0 auto 20px;}
+.quiz-progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.q-position{font-family:var(--font-mono);font-size:13px;color:var(--text-muted);}
+.quiz-dots{display:flex;gap:8px;}
+.quiz-dot{
+  width:26px;height:26px;border-radius:50%;border:1.5px solid var(--border-soft);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:11px;color:var(--text-muted);flex-shrink:0;
+}
+.quiz-dot.answered{background:var(--gold-deep);border-color:var(--gold-deep);color:#fff;}
+.quiz-dot.current{border-color:var(--gold-deep);box-shadow:0 0 0 3px rgba(157,190,224,.35);}
+
+.quiz-card{max-width:680px;margin:0 auto;padding:32px;}
+.quiz-context{
+  background:var(--paper);border-left:3px solid var(--gold-deep);padding:16px 18px;
+  border-radius:0 10px 10px 0;font-size:14px;color:var(--text-muted);margin-bottom:22px;font-style:italic;
+}
+.quiz-enunciado{font-family:var(--font-display);font-size:19px;font-weight:500;line-height:1.4;color:var(--text-ink);margin:0 0 24px;}
+.quiz-options{display:flex;flex-direction:column;gap:10px;}
+.option{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1.5px solid var(--border-soft);border-radius:12px;cursor:pointer;}
+.option:hover{border-color:var(--gold);}
+.option.selected{border-color:var(--gold-deep);background:var(--paper);}
+.opt-letter{
+  width:30px;height:30px;border-radius:50%;border:1.5px solid var(--text-muted);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--text-muted);flex-shrink:0;
+}
+.option.selected .opt-letter{border-color:var(--gold-deep);background:var(--gold-deep);color:#fff;}
+.opt-text{font-size:14.5px;color:var(--text-ink);}
+
+.quiz-nav{display:flex;justify-content:space-between;max-width:680px;margin:22px auto 0;}
+
+.results-card{max-width:680px;margin:0 auto;padding:36px;}
+.results-hero{text-align:center;padding-bottom:24px;border-bottom:1px solid var(--border-soft);margin-bottom:8px;}
+.results-score{font-family:var(--font-mono);font-weight:700;font-size:52px;color:var(--gold-deep);}
+.results-score .of{font-size:22px;color:var(--text-muted);margin-left:4px;}
+.results-label{font-size:13px;color:var(--text-muted);margin-top:4px;}
+.result-row{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-top:1px solid var(--border-soft);}
+.result-row:first-child{border-top:none;}
+.result-dot{width:14px;height:14px;border-radius:50%;margin-top:3px;flex-shrink:0;border:1.5px solid var(--border-soft);}
+.result-dot.correct{background:var(--good);border-color:var(--good);}
+.result-dot.wrong{background:var(--correction);border-color:var(--correction);}
+.result-q{font-size:14px;font-weight:600;margin-bottom:2px;}
+.result-detail{font-size:12.5px;color:var(--text-muted);font-family:var(--font-mono);}
+.results-actions{display:flex;justify-content:space-between;margin-top:26px;}
+.results-source{font-size:12px;color:var(--text-muted);text-align:center;margin-top:18px;}
+
+@media(max-width:700px){
+  .quiz-card, .results-card{padding:22px;}
+}

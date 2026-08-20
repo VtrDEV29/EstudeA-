@@ -1,0 +1,13 @@
+/* ==========================================================================
+   EstudeAI — Atividade de trilha (estudeai-atividade.html)
+   Extras sobre css/quiz.css: banner de conclusão e estado "não encontrado".
+   ========================================================================== */
+
+.complete-banner{
+  margin:20px 0;padding:16px 18px;border-radius:12px;font-size:13.5px;
+  background:rgba(61,122,84,.1);border:1px solid var(--good);color:var(--good);
+}
+html[data-theme="dark"] .complete-banner{background:rgba(111,203,143,.1);}
+
+.not-found{max-width:520px;margin:20px auto 0;padding:40px 36px;text-align:center;}
+.not-found p{color:var(--text-muted);font-size:14px;margin:0 0 20px;}

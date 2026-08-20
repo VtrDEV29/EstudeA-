@@ -1,0 +1,41 @@
+/* ==========================================================================
+   EstudeAI — Desempenho (estudeai-desempenho.html)
+   ========================================================================== */
+
+/* ---------- stats ---------- */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:36px;}
+.stat-card{padding:20px 22px;}
+.stat-card .label{font-size:12.5px;color:var(--text-muted);margin-bottom:10px;}
+.stat-card .value{font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--text-ink);}
+.stat-card .sub{font-size:12.5px;color:var(--text-muted);margin-top:6px;}
+
+/* ---------- subjects ---------- */
+.subjects{display:flex;flex-direction:column;gap:12px;margin-bottom:36px;}
+.subject-row{display:flex;align-items:center;gap:16px;padding:16px 20px;}
+.subject-row .sname{width:110px;flex-shrink:0;font-size:14.5px;font-weight:600;}
+.subject-row .sbar{flex:1;height:8px;border-radius:100px;background:var(--paper);border:1px solid var(--border-soft);overflow:hidden;}
+.subject-row .sfill{height:100%;border-radius:100px;background:var(--gold);}
+.subject-row .spct{width:56px;text-align:right;font-family:var(--font-mono);font-size:12.5px;color:var(--text-muted);flex-shrink:0;}
+
+/* ---------- simulados ---------- */
+.sim-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px;}
+.sim-card{padding:24px 26px;}
+.sim-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px;}
+.sim-card h3{font-family:var(--font-display);font-size:18px;font-weight:600;margin:0 0 4px;}
+.sim-card .sim-area{font-size:12.5px;color:var(--text-muted);}
+.sim-status{font-size:11px;padding:4px 10px;border-radius:100px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.03em;flex-shrink:0;}
+.sim-status.ok{background:rgba(61,122,84,.12);color:var(--good);}
+.sim-status.warn{background:rgba(214,69,80,.12);color:var(--correction);}
+.sim-status.pending{background:var(--paper);color:var(--text-muted);border:1px solid var(--border-soft);}
+.sim-score{font-family:var(--font-mono);font-size:32px;font-weight:700;color:var(--gold-deep);margin-bottom:4px;}
+.sim-score .of{font-size:16px;color:var(--text-muted);}
+.sim-pct{font-size:13px;color:var(--text-muted);margin-bottom:18px;}
+
+@media(max-width:980px){
+  .stats-row{grid-template-columns:1fr;}
+  .sim-cards{grid-template-columns:1fr;}
+}
+@media(max-width:600px){
+  .subject-row{flex-wrap:wrap;}
+  .subject-row .sname{width:100%;}
+}

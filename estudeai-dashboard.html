@@ -88,6 +88,8 @@
     display:flex;align-items:center;justify-content:center;
   }
   .logo svg{width:18px;height:18px;flex-shrink:0;color:var(--gold-on-dark);}
+  .logo-text{display:flex;flex-direction:column;gap:3px;line-height:1.15;}
+  .logo-tag{font-family:var(--font-mono);font-size:10px;font-weight:500;color:var(--text-on-ink-muted);letter-spacing:.02em;}
   .nav-label{
     font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
     color:var(--text-on-ink-muted);opacity:.65;padding:0 14px;margin-bottom:10px;
@@ -147,7 +149,7 @@
   .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
   .stat-card{background:var(--card);border:1px solid var(--border-soft);border-radius:var(--radius-card);padding:20px 22px;}
   .stat-card .label{font-size:12.5px;color:var(--text-muted);margin-bottom:10px;}
-  .stat-card .value{font-family:var(--font-display);font-size:28px;font-weight:600;color:var(--text-muted);}
+  .stat-card .value{font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--text-ink);}
   .stat-card .trend{font-size:12.5px;margin-top:6px;color:var(--good);}
   .stat-card .trend.down{color:var(--correction);}
 
@@ -214,7 +216,10 @@
           <path d="M3 26C6.2 24.4 9.2 24.4 12 26" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
         </svg>
       </span>
-      EstudeAI
+      <span class="logo-text">
+        EstudeAI
+        <span class="logo-tag">3º ano · ENEM</span>
+      </span>
     </div>
 
     <div class="nav-label">Menu</div>
@@ -272,19 +277,23 @@
     <div class="stats-row">
       <div class="stat-card">
         <div class="label">Sequência de estudo</div>
-        <div class="value">—</div>
+        <div class="value">12 dias</div>
+        <div class="trend">+3 essa semana</div>
       </div>
       <div class="stat-card">
         <div class="label">Simulados feitos</div>
-        <div class="value">—</div>
+        <div class="value">7</div>
+        <div class="trend">+2 esse mês</div>
       </div>
       <div class="stat-card">
         <div class="label">Média geral</div>
-        <div class="value">—</div>
+        <div class="value">68%</div>
+        <div class="trend down">-3% na última semana</div>
       </div>
       <div class="stat-card">
         <div class="label">Horas estudadas</div>
-        <div class="value">—</div>
+        <div class="value">34h</div>
+        <div class="trend">+6h essa semana</div>
       </div>
     </div>
 
@@ -300,8 +309,8 @@
         </div>
         <h3>Funções e Geometria Analítica</h3>
         <p>Você está na frente de Matemática. Faltam 4 módulos para fechar essa etapa da reta final.</p>
-        <div class="progress-bar"><div class="fill" style="width:0%"></div></div>
-        <div class="progress-label"><span>Progresso do módulo</span><b>0%</b></div>
+        <div class="progress-bar"><div class="fill" style="width:62%"></div></div>
+        <div class="progress-label"><span>Progresso do módulo</span><b>62%</b></div>
         <button class="btn btn-solid">Continuar estudando</button>
       </div>
 
@@ -310,11 +319,11 @@
           <h2>Desempenho por matéria</h2>
           <a href="#">Ver tudo</a>
         </div>
-        <div class="subject-row"><span class="sname">Matemática</span><div class="sbar"><div class="sfill" style="width:0%"></div></div><span class="spct">0%</span></div>
-        <div class="subject-row"><span class="sname">Português</span><div class="sbar"><div class="sfill" style="width:0%"></div></div><span class="spct">0%</span></div>
-        <div class="subject-row"><span class="sname">Química</span><div class="sbar"><div class="sfill" style="width:0%"></div></div><span class="spct">0%</span></div>
-        <div class="subject-row"><span class="sname">Biologia</span><div class="sbar"><div class="sfill" style="width:0%"></div></div><span class="spct">0%</span></div>
-        <div class="subject-row"><span class="sname">História</span><div class="sbar"><div class="sfill" style="width:0%"></div></div><span class="spct">0%</span></div>
+        <div class="subject-row"><span class="sname">Matemática</span><div class="sbar"><div class="sfill" style="width:74%"></div></div><span class="spct">74%</span></div>
+        <div class="subject-row"><span class="sname">Português</span><div class="sbar"><div class="sfill" style="width:81%"></div></div><span class="spct">81%</span></div>
+        <div class="subject-row"><span class="sname">Química</span><div class="sbar"><div class="sfill" style="width:52%"></div></div><span class="spct">52%</span></div>
+        <div class="subject-row"><span class="sname">Biologia</span><div class="sbar"><div class="sfill" style="width:69%"></div></div><span class="spct">69%</span></div>
+        <div class="subject-row"><span class="sname">História</span><div class="sbar"><div class="sfill" style="width:58%"></div></div><span class="spct">58%</span></div>
       </div>
     </div>
 
@@ -351,8 +360,26 @@
         <div class="card-head">
           <h2>Atividade recente</h2>
         </div>
-        <div class="empty-state">
-          <p>Nenhuma atividade registrada ainda.</p>
+        <div class="activity-item">
+          <div class="activity-dot"></div>
+          <div>
+            <div class="a-title">Concluiu o módulo de Funções — Matemática</div>
+            <div class="a-time">Hoje, 19:40</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-dot wrong"></div>
+          <div>
+            <div class="a-title">Simulado FUVEST — 1ª fase: 58/90 acertos</div>
+            <div class="a-time">Ontem, 21:10</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-dot"></div>
+          <div>
+            <div class="a-title">Redação enviada — tema livre</div>
+            <div class="a-time">2 dias atrás</div>
+          </div>
         </div>
       </div>
     </div>

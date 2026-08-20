@@ -220,7 +220,7 @@
       </span>
       <span class="logo-text">
         EstudeAI
-        <span class="logo-tag">3º ano · ENEM</span>
+        <span class="logo-tag" id="sidebar-logo-tag">3º ano · ENEM</span>
       </span>
     </div>
 
@@ -255,10 +255,10 @@
         <span id="theme-label">Modo escuro</span>
       </button>
       <div class="profile-mini">
-        <div class="avatar">A</div>
+        <div class="avatar" id="profile-avatar">A</div>
         <div>
-          <div class="name">Aluno(a)</div>
-          <div class="meta">Ano · Vestibular</div>
+          <div class="name" id="profile-name">Aluno(a)</div>
+          <div class="meta" id="profile-meta">Ano · Vestibular</div>
         </div>
       </div>
     </div>
@@ -315,6 +315,26 @@ function toggleTheme(){
   html.setAttribute('data-theme', isDark ? 'light' : 'dark');
   document.getElementById('theme-label').textContent = isDark ? 'Modo escuro' : 'Modo claro';
 }
+
+function applyUserProfile(){
+  let user = null;
+  try { user = JSON.parse(localStorage.getItem('estudeai_user') || 'null'); } catch(e){}
+  if(!user || !user.nome) return;
+
+  const primeiroNome = user.nome.split(' ')[0];
+  const inicial = user.nome.trim().charAt(0).toUpperCase();
+
+  const avatarEl = document.getElementById('profile-avatar');
+  const nameEl = document.getElementById('profile-name');
+  const metaEl = document.getElementById('profile-meta');
+  const tagEl = document.getElementById('sidebar-logo-tag');
+
+  if(avatarEl) avatarEl.textContent = inicial;
+  if(nameEl) nameEl.textContent = primeiroNome;
+  if(metaEl) metaEl.textContent = `${user.ano} · ${user.vestibular}`;
+  if(tagEl) tagEl.textContent = `${user.ano} · ${user.vestibular}`;
+}
+applyUserProfile();
 
 const QUESTIONS_PER_ATTEMPT = 5;
 

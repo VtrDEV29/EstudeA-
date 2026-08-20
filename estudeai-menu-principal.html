@@ -593,24 +593,24 @@
           <button class="auth-tab" id="tab-cadastro" onclick="showAuth('cadastro')">Criar conta</button>
         </div>
 
-        <div class="auth-panel active" id="panel-login">
+        <form class="auth-panel active" id="panel-login" onsubmit="return fazerLogin(event)">
           <div class="field">
             <label for="login-email">E-mail</label>
-            <input type="email" id="login-email" placeholder="seunome@email.com">
+            <input type="email" id="login-email" placeholder="seunome@email.com" required>
           </div>
           <div class="field">
             <label for="login-senha">Senha</label>
-            <input type="password" id="login-senha" placeholder="Sua senha">
+            <input type="password" id="login-senha" placeholder="Sua senha" required>
           </div>
-          <button class="btn btn-solid auth-submit">Entrar</button>
+          <button type="submit" class="btn btn-solid auth-submit">Entrar</button>
           <div class="auth-foot">Esqueceu a senha? <a href="#" style="color:var(--gold-deep);font-weight:600;">Recuperar acesso</a></div>
-        </div>
+        </form>
 
-        <div class="auth-panel" id="panel-cadastro">
+        <form class="auth-panel" id="panel-cadastro" onsubmit="return criarConta(event)">
           <div class="field-row">
             <div class="field">
               <label for="cad-nome">Nome</label>
-              <input type="text" id="cad-nome" placeholder="Seu nome">
+              <input type="text" id="cad-nome" placeholder="Seu nome" required>
             </div>
             <div class="field">
               <label for="cad-ano">Ano escolar</label>
@@ -623,7 +623,7 @@
           </div>
           <div class="field">
             <label for="cad-email">E-mail</label>
-            <input type="email" id="cad-email" placeholder="seunome@email.com">
+            <input type="email" id="cad-email" placeholder="seunome@email.com" required>
           </div>
           <div class="field">
             <label for="cad-vestibular">Vestibular alvo</label>
@@ -636,10 +636,10 @@
           </div>
           <div class="field">
             <label for="cad-senha">Senha</label>
-            <input type="password" id="cad-senha" placeholder="Crie uma senha">
+            <input type="password" id="cad-senha" placeholder="Crie uma senha" required>
           </div>
-          <button class="btn btn-gold auth-submit">Criar minha conta</button>
-        </div>
+          <button type="submit" class="btn btn-gold auth-submit">Criar minha conta</button>
+        </form>
       </div>
     </div>
   </div>
@@ -677,6 +677,25 @@
 </footer>
 
 <script>
+function criarConta(e){
+  e.preventDefault();
+  const user = {
+    nome: document.getElementById('cad-nome').value.trim(),
+    ano: document.getElementById('cad-ano').value,
+    vestibular: document.getElementById('cad-vestibular').value,
+    email: document.getElementById('cad-email').value.trim()
+  };
+  try { localStorage.setItem('estudeai_user', JSON.stringify(user)); } catch(err){}
+  window.location.href = 'estudeai-dashboard.html';
+  return false;
+}
+
+function fazerLogin(e){
+  e.preventDefault();
+  window.location.href = 'estudeai-dashboard.html';
+  return false;
+}
+
 function toggleTheme(){
   const html = document.documentElement;
   const isDark = html.getAttribute('data-theme') === 'dark';

@@ -189,24 +189,6 @@
   .proof-text b{color:var(--text-ink);font-family:var(--font-mono);font-weight:700;}
 
   .hero-visual{position:relative;}
-  .mini-gabarito{
-    position:absolute;left:-32px;bottom:-40px;width:200px;z-index:2;
-    background:var(--card);border:1px solid var(--border-soft);border-radius:14px;
-    padding:16px 18px;box-shadow:0 26px 46px -22px rgba(16,25,43,.38);
-    transform:rotate(-7deg);opacity:0;
-    animation:fadeInUp .7s ease forwards .55s, floatSoft 5.5s ease-in-out infinite 1.3s;
-  }
-  .mini-gabarito .mg-head{
-    display:flex;justify-content:space-between;align-items:center;gap:8px;
-    font-family:var(--font-mono);font-size:10.5px;color:var(--text-muted);
-    margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border-soft);
-  }
-  .mini-gabarito .mg-score{
-    background:var(--good);color:#fff;padding:2px 8px;border-radius:100px;font-weight:700;flex-shrink:0;
-  }
-  .mini-gabarito .gabarito-row{padding:5px 0;}
-  .mini-gabarito .gabarito-row .bubble{width:10px;height:10px;}
-  @media(max-width:840px){ .mini-gabarito{display:none;} }
 
   .countdown-card{
     background:var(--ink);color:var(--text-on-ink);

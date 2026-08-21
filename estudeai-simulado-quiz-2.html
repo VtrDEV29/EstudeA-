@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EstudeAI — Simulado ENEM 2019 · Natureza e Matemática</title>
+<title>EstudeAI — Simulado ENEM 2019 · Exatas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/app-shell.css">
 <link rel="stylesheet" href="css/quiz.css">
-<link rel="stylesheet" href="css/simulado-quiz-2.css">
 </head>
 <body>
 
@@ -71,22 +70,13 @@
 
   <main>
     <a href="estudeai-simulados.html" class="back-link">← Simulados</a>
-    <div class="greeting-eyebrow">ENEM 2019 · Natureza e Matemática</div>
+    <div class="greeting-eyebrow">ENEM 2019 · Exatas</div>
     <h1>Simulado</h1>
-
-    <div id="locked-view" style="display:none;">
-      <div class="card locked-card">
-        <div class="locked-icon">🔒</div>
-        <h2>Este simulado ainda está bloqueado</h2>
-        <p>Acerte pelo menos 3 de 5 questões no Simulado 1 (ENEM 2019 — Seleção oficial) para liberar este.</p>
-        <a href="estudeai-simulado-quiz.html" class="btn btn-solid">Fazer o Simulado 1</a>
-      </div>
-    </div>
 
     <div id="quiz-view">
       <div class="quiz-progress">
         <div class="quiz-progress-top">
-          <span class="q-position" id="q-position">Questão 1 de 4</span>
+          <span class="q-position" id="q-position">Questão 1 de 5</span>
           <span class="tag" id="q-area">Física</span>
         </div>
         <div class="quiz-dots" id="quiz-dots"></div>
@@ -107,10 +97,10 @@
     <div id="results-view" style="display:none;">
       <div class="card results-card">
         <div class="results-hero">
-          <div class="results-score"><span id="score-num">0</span><span class="of" id="score-of">/ 4</span></div>
+          <div class="results-score"><span id="score-num">0</span><span class="of" id="score-of">/ 5</span></div>
           <div class="results-label">questões corretas</div>
         </div>
-        <div class="results-note">Novos simulados (FUVEST, UNICAMP) chegam em breve.</div>
+        <div class="unlock-banner" id="unlock-banner"></div>
         <div class="results-list" id="results-list"></div>
         <div class="results-actions">
           <button class="btn btn-ghost" onclick="restartQuiz()">Refazer simulado</button>

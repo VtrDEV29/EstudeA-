@@ -1,6 +1,6 @@
 /* ==========================================================================
-   EstudeAI — Simulado 1 (estudeai-simulado-quiz.html)
-   ENEM 2019 — Seleção oficial. Questões reais, extraídas da prova oficial
+   EstudeAI — ENEM 2019 · Humanas (estudeai-simulado-quiz.html)
+   Linguagens e Ciências Humanas. Questões reais, extraídas da prova oficial
    aplicada pelo INEP, publicada em domínio público para fins educacionais.
    Depende de js/common.js (shuffle, logActivity, getUser).
    ========================================================================== */
@@ -66,21 +66,6 @@ const questionPool = [
       { letra: 'E', texto: 'representação da autoridade constituída.' }
     ],
     correta: 'B',
-    dificuldade: 'dificil'
-  },
-  {
-    area: 'Matemática',
-    numero: 'Questão 137',
-    textoBase: null,
-    enunciado: 'Uma fábrica monta trens de brinquedo compostos por uma locomotiva e 12 vagões, cujas posições são fixas e numeradas de 1 a 12. Desses 12 vagões, 4 são vermelhos, 3 são azuis, 3 são verdes e 2 são amarelos. De quantas formas diferentes esses trens podem ser montados, considerando apenas as variações de cores entre as posições dos vagões?',
-    alternativas: [
-      { letra: 'A', texto: 'C(12,4) × C(8,3) × C(5,3) × C(2,2)' },
-      { letra: 'B', texto: '12! / (4! × 3! × 3! × 2!)' },
-      { letra: 'C', texto: 'C(12,4) + C(12,3) + C(12,3) + C(12,2)' },
-      { letra: 'D', texto: '4! × 3! × 3! × 2!' },
-      { letra: 'E', texto: 'C(12,12)' }
-    ],
-    correta: 'A',
     dificuldade: 'dificil'
   },
   {
@@ -196,12 +181,12 @@ function pickQuestions(){
 
 function updateEyebrow(){
   const ano = getUserAno();
-  const nivel = ano === '1º ano' ? 'nível 1º ano · questões mais leves'
-    : ano === '2º ano' ? 'nível 2º ano · dificuldade intermediária'
-    : ano === '3º ano' ? 'nível 3º ano · dificuldade completa'
-    : 'Seleção oficial';
+  const nivel = ano === '1º ano' ? ' · nível 1º ano, questões mais leves'
+    : ano === '2º ano' ? ' · nível 2º ano, dificuldade intermediária'
+    : ano === '3º ano' ? ' · nível 3º ano, dificuldade completa'
+    : '';
   const el = document.getElementById('quiz-eyebrow');
-  if(el) el.textContent = `ENEM 2019 · ${nivel}`;
+  if(el) el.textContent = `ENEM 2019 · Humanas${nivel}`;
 }
 updateEyebrow();
 
@@ -265,11 +250,10 @@ function goNext(){
   else { finishQuiz(); }
 }
 
-const PASS_SCORE = 3;
-
 function finishQuiz(){
   let score = 0;
   questions.forEach((q, i) => { if(answers[i] === q.correta) score++; });
+  const passScore = Math.ceil(questions.length / 2);
 
   try {
     const prevScore = Number(localStorage.getItem('estudeai_sim1_score') || 0);
@@ -280,8 +264,8 @@ function finishQuiz(){
   } catch(e){}
 
   logActivity({
-    label: `Simulado 1 (ENEM 2019): ${score}/${questions.length} acertos`,
-    correta: score >= PASS_SCORE
+    label: `ENEM 2019 · Humanas: ${score}/${questions.length} acertos`,
+    correta: score >= passScore
   });
 
   document.getElementById('quiz-view').style.display = 'none';
@@ -290,12 +274,12 @@ function finishQuiz(){
   document.getElementById('score-of').textContent = `/ ${questions.length}`;
 
   const banner = document.getElementById('unlock-banner');
-  if(score >= PASS_SCORE){
+  if(score >= passScore){
     banner.className = 'unlock-banner pass';
-    banner.innerHTML = `<span>🎉 Você acertou ${score} de ${questions.length} e desbloqueou o próximo simulado.</span><a href="estudeai-simulado-quiz-2.html" class="btn btn-solid btn-sm">Ir para o próximo</a>`;
+    banner.innerHTML = `<span>🎉 Você acertou ${score} de ${questions.length} — mais da metade. Esse é o tipo de resultado que vai liberar os simulados de 2020 quando chegarem.</span>`;
   } else {
     banner.className = 'unlock-banner fail';
-    banner.innerHTML = `<span>Acerte pelo menos ${PASS_SCORE} de ${questions.length} para desbloquear o próximo simulado. Você acertou ${score}.</span>`;
+    banner.innerHTML = `<span>Acerte pelo menos ${passScore} de ${questions.length} para ficar no ritmo de liberar os próximos anos de simulado. Você acertou ${score}.</span>`;
   }
 
   const list = document.getElementById('results-list');

@@ -9,37 +9,28 @@ function applyVestibularFilter(){
 
   if(!vestibular || vestibular === 'ENEM' || vestibular === 'Ainda não sei') return;
 
-  const grid = document.getElementById('exam-grid');
-  const matchCard = grid.querySelector(`.exam-card[data-vestibular="${vestibular}"]`);
-  if(matchCard) grid.prepend(matchCard);
-
   const notice = document.getElementById('vestibular-notice');
   notice.style.display = 'block';
-  notice.innerHTML = `Você escolheu <b>${vestibular}</b> no cadastro. Os simulados de ${vestibular} ainda estão em produção — assim que lançarmos, aparecem aqui primeiro. Enquanto isso, pratique com as questões reais do ENEM abaixo.`;
+  notice.innerHTML = `Você escolheu <b>${vestibular}</b> no cadastro. Ainda não temos simulados específicos de ${vestibular} — por enquanto, os simulados reais disponíveis são do ENEM.`;
 }
 applyVestibularFilter();
 
-const SIM1_PASS_SCORE = 3;
-let sim1Score = null;
-let sim1Total = 5;
-try {
-  sim1Score = localStorage.getItem('estudeai_sim1_score');
-  sim1Total = Number(localStorage.getItem('estudeai_sim1_total') || 5);
-} catch(e){}
+function mostrarPontuacao(elId, scoreKey, totalKey, totalPadrao){
+  let score = null;
+  let total = totalPadrao;
+  try {
+    score = localStorage.getItem(scoreKey);
+    total = Number(localStorage.getItem(totalKey) || totalPadrao);
+  } catch(e){}
 
-if(sim1Score !== null){
-  const note = document.getElementById('sim1-score-note');
-  note.textContent = `Sua pontuação: ${sim1Score}/${sim1Total}`;
+  if(score === null) return;
 
-  if(Number(sim1Score) >= SIM1_PASS_SCORE){
-    document.getElementById('sim2-badge').textContent = 'Questões reais';
-    document.getElementById('sim2-badge').classList.remove('soon');
+  const note = document.getElementById(elId);
+  if(!note) return;
+  note.textContent = `Sua pontuação: ${score}/${total}`;
 
-    const btn = document.getElementById('sim2-btn');
-    btn.removeAttribute('disabled');
-    btn.textContent = 'Iniciar simulado';
-    btn.outerHTML = `<a href="estudeai-simulado-quiz-2.html" class="btn btn-solid">Iniciar simulado</a>`;
-
-    document.getElementById('sim2-lock-note').remove();
-  }
+  const passScore = Math.ceil(total / 2);
+  if(Number(score) >= passScore) note.classList.add('unlocked');
 }
+mostrarPontuacao('sim1-score-note', 'estudeai_sim1_score', 'estudeai_sim1_total', 5);
+mostrarPontuacao('sim2-score-note', 'estudeai_sim2_score', 'estudeai_sim2_total', 5);

@@ -1,20 +1,12 @@
 /* ==========================================================================
-   EstudeAI — Simulado 2 (estudeai-simulado-quiz-2.html)
-   ENEM 2019 — Natureza e Matemática. Questões reais, extraídas da prova
+   EstudeAI — ENEM 2019 · Exatas (estudeai-simulado-quiz-2.html)
+   Ciências da Natureza e Matemática. Questões reais, extraídas da prova
    oficial aplicada pelo INEP, publicada em domínio público.
+   Liberado junto com o Humanas (não há bloqueio entre os dois do mesmo ano).
    Depende de js/common.js (shuffle, logActivity, getUser).
    ========================================================================== */
 
-const PASS_SCORE = 3;
-let sim1Score = 0;
-try { sim1Score = Number(localStorage.getItem('estudeai_sim1_score') || 0); } catch(e){}
-
-if(sim1Score < PASS_SCORE){
-  document.getElementById('quiz-view').style.display = 'none';
-  document.getElementById('locked-view').style.display = 'block';
-} else {
-
-const QUESTIONS_PER_ATTEMPT = 4;
+const QUESTIONS_PER_ATTEMPT = 5;
 
 const questionPool = [
   {
@@ -70,6 +62,20 @@ const questionPool = [
       { letra: 'C', texto: 'um valor entre 7 e 8.' },
       { letra: 'D', texto: 'um valor entre 70 e 80.' },
       { letra: 'E', texto: 'um valor entre 10⁻⁸ e 10⁻⁷.' }
+    ],
+    correta: 'A'
+  },
+  {
+    area: 'Matemática',
+    numero: 'Questão 137',
+    textoBase: null,
+    enunciado: 'Uma fábrica monta trens de brinquedo compostos por uma locomotiva e 12 vagões, cujas posições são fixas e numeradas de 1 a 12. Desses 12 vagões, 4 são vermelhos, 3 são azuis, 3 são verdes e 2 são amarelos. De quantas formas diferentes esses trens podem ser montados, considerando apenas as variações de cores entre as posições dos vagões?',
+    alternativas: [
+      { letra: 'A', texto: 'C(12,4) × C(8,3) × C(5,3) × C(2,2)' },
+      { letra: 'B', texto: '12! / (4! × 3! × 3! × 2!)' },
+      { letra: 'C', texto: 'C(12,4) + C(12,3) + C(12,3) + C(12,2)' },
+      { letra: 'D', texto: '4! × 3! × 3! × 2!' },
+      { letra: 'E', texto: 'C(12,12)' }
     ],
     correta: 'A'
   }
@@ -142,6 +148,7 @@ function goNext(){
 function finishQuiz(){
   let score = 0;
   questions.forEach((q, i) => { if(answers[i] === q.correta) score++; });
+  const passScore = Math.ceil(questions.length / 2);
 
   try {
     const prevScore = Number(localStorage.getItem('estudeai_sim2_score') || 0);
@@ -152,14 +159,25 @@ function finishQuiz(){
   } catch(e){}
 
   logActivity({
-    label: `Simulado 2 (ENEM 2019): ${score}/${questions.length} acertos`,
-    correta: true
+    label: `ENEM 2019 · Exatas: ${score}/${questions.length} acertos`,
+    correta: score >= passScore
   });
 
   document.getElementById('quiz-view').style.display = 'none';
   document.getElementById('results-view').style.display = 'block';
   document.getElementById('score-num').textContent = score;
   document.getElementById('score-of').textContent = `/ ${questions.length}`;
+
+  const banner = document.getElementById('unlock-banner');
+  if(banner){
+    if(score >= passScore){
+      banner.className = 'unlock-banner pass';
+      banner.innerHTML = `<span>🎉 Você acertou ${score} de ${questions.length} — mais da metade. Esse é o tipo de resultado que vai liberar os simulados de 2020 quando chegarem.</span>`;
+    } else {
+      banner.className = 'unlock-banner fail';
+      banner.innerHTML = `<span>Acerte pelo menos ${passScore} de ${questions.length} para ficar no ritmo de liberar os próximos anos de simulado. Você acertou ${score}.</span>`;
+    }
+  }
 
   const list = document.getElementById('results-list');
   list.innerHTML = '';
@@ -190,5 +208,3 @@ function restartQuiz(){
 }
 
 renderQuestion();
-
-}

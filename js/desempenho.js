@@ -38,18 +38,18 @@ function renderSimulados(){
   const container = document.getElementById('sim-cards');
   container.innerHTML = '';
 
-  let sim1Score = null, sim1Total = 5;
-  let sim2Score = null, sim2Total = 4;
+  let sim1Score = null, sim1Total = 10;
+  let sim2Score = null, sim2Total = 5;
   try {
     sim1Score = localStorage.getItem('estudeai_sim1_score');
-    sim1Total = Number(localStorage.getItem('estudeai_sim1_total') || 5);
+    sim1Total = Number(localStorage.getItem('estudeai_sim1_total') || 10);
     sim2Score = localStorage.getItem('estudeai_sim2_score');
-    sim2Total = Number(localStorage.getItem('estudeai_sim2_total') || 4);
+    sim2Total = Number(localStorage.getItem('estudeai_sim2_total') || 5);
   } catch(e){}
 
   const sims = [
-    { nome: 'Simulado 1', area: 'ENEM 2019 — Seleção oficial', score: sim1Score, total: sim1Total, passScore: 3, link: 'estudeai-simulado-quiz.html' },
-    { nome: 'Simulado 2', area: 'ENEM 2019 — Natureza e Matemática', score: sim2Score, total: sim2Total, passScore: null, link: 'estudeai-simulado-quiz-2.html' }
+    { nome: 'ENEM 2019 — Humanas', area: 'Linguagens e Ciências Humanas', score: sim1Score, total: sim1Total, passScore: Math.ceil(sim1Total / 2), link: 'estudeai-simulado-quiz.html' },
+    { nome: 'ENEM 2019 — Exatas', area: 'Ciências da Natureza e Matemática', score: sim2Score, total: sim2Total, passScore: Math.ceil(sim2Total / 2), link: 'estudeai-simulado-quiz-2.html' }
   ];
 
   let realizados = 0;

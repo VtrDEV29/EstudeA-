@@ -10,7 +10,7 @@ const CHAVES_PROGRESSO = [
 
 function emailLocalPartValida(email){
   const localPart = email.split('@')[0] || '';
-  return localPart.length >= 6 && /\d/.test(localPart);
+  return localPart.length >= 6;
 }
 
 function criarConta(e){
@@ -22,7 +22,7 @@ function criarConta(e){
 
   if(!emailLocalPartValida(email)){
     emailInput.classList.add('invalid');
-    emailError.textContent = 'A parte antes do @ precisa ter pelo menos 6 caracteres, com pelo menos 1 número.';
+    emailError.textContent = 'A parte antes do @ precisa ter pelo menos 6 caracteres.';
     emailError.style.display = 'block';
     emailInput.focus();
     return false;

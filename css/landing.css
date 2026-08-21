@@ -175,19 +175,6 @@
   .hero-sub{font-size:18px;color:var(--text-muted);max-width:460px;margin:0 0 36px;}
   .hero-ctas{display:flex;gap:14px;margin-bottom:40px;}
 
-  .proof-row{display:flex;align-items:center;gap:14px;}
-  .avatar-stack{display:flex;}
-  .mini-avatar{
-    width:30px;height:30px;border-radius:50%;flex-shrink:0;
-    background:var(--ink);color:var(--gold-on-dark);
-    font-family:var(--font-mono);font-size:12px;font-weight:700;
-    display:flex;align-items:center;justify-content:center;
-    border:2px solid var(--paper);margin-left:-9px;
-  }
-  .mini-avatar:first-child{margin-left:0;}
-  .proof-text{font-size:13.5px;color:var(--text-muted);}
-  .proof-text b{color:var(--text-ink);font-family:var(--font-mono);font-weight:700;}
-
   .hero-visual{position:relative;}
 
   .countdown-card{

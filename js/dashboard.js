@@ -26,6 +26,9 @@ function applyUserProfile(){
   const trilhaVestibularEl = document.getElementById('trilha-tag-vestibular');
   const trilhaModuloEl = document.getElementById('trilha-current-module');
   const trilhaDescEl = document.getElementById('trilha-current-desc');
+  const trilhaFillEl = document.getElementById('trilha-progress-fill');
+  const trilhaPctEl = document.getElementById('trilha-progress-pct');
+  const trilhaCtaEl = document.getElementById('trilha-cta');
 
   if(avatarEl) avatarEl.textContent = inicial;
   if(nameEl) nameEl.textContent = primeiroNome;
@@ -38,6 +41,17 @@ function applyUserProfile(){
   if(trilhaVestibularEl) trilhaVestibularEl.textContent = vestibular;
   if(trilhaModuloEl) trilhaModuloEl.textContent = primeiroModulo;
   if(trilhaDescEl) trilhaDescEl.textContent = `Você está na frente de Matemática. Comece pelo primeiro módulo da sua trilha do ${ano}.`;
+
+  const anoNum = ANO_NUM[ano] || '3';
+  const moduloId = `${MATERIA_SLUG['Matemática']}-${anoNum}`;
+  const concluido = getModulosConcluidos().includes(moduloId);
+
+  if(trilhaFillEl) trilhaFillEl.style.width = concluido ? '100%' : '0%';
+  if(trilhaPctEl) trilhaPctEl.textContent = concluido ? '100%' : '0%';
+  if(trilhaCtaEl){
+    trilhaCtaEl.href = `estudeai-atividade.html?id=${moduloId}`;
+    trilhaCtaEl.textContent = concluido ? 'Continuar estudando' : 'Começar a estudar';
+  }
 }
 applyUserProfile();
 

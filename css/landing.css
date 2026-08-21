@@ -313,6 +313,9 @@
     background:var(--paper);font-family:var(--font-body);font-size:14.5px;color:var(--text-ink);
   }
   .field input:focus,.field select:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold-deep);}
+  .field input.invalid{border-color:var(--correction);}
+  .field-hint{font-size:12px;color:var(--text-muted);margin:6px 0 0;}
+  .field-error{font-size:12px;color:var(--correction);margin:6px 0 0;font-weight:600;}
   .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
   .auth-submit{width:100%;padding:13px 0;border-radius:10px;margin-top:6px;font-size:15px;}
   .auth-foot{margin-top:16px;font-size:13px;color:var(--text-muted);text-align:center;}

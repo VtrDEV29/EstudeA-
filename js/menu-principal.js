@@ -8,13 +8,33 @@ const CHAVES_PROGRESSO = [
   'estudeai_modulos_concluidos', 'estudeai_activity_log'
 ];
 
+function emailLocalPartValida(email){
+  const localPart = email.split('@')[0] || '';
+  return localPart.length >= 6 && /\d/.test(localPart);
+}
+
 function criarConta(e){
   e.preventDefault();
+
+  const emailInput = document.getElementById('cad-email');
+  const emailError = document.getElementById('cad-email-error');
+  const email = emailInput.value.trim();
+
+  if(!emailLocalPartValida(email)){
+    emailInput.classList.add('invalid');
+    emailError.textContent = 'A parte antes do @ precisa ter pelo menos 6 caracteres, com pelo menos 1 número.';
+    emailError.style.display = 'block';
+    emailInput.focus();
+    return false;
+  }
+  emailInput.classList.remove('invalid');
+  emailError.style.display = 'none';
+
   const user = {
     nome: document.getElementById('cad-nome').value.trim(),
     ano: document.getElementById('cad-ano').value,
     vestibular: document.getElementById('cad-vestibular').value,
-    email: document.getElementById('cad-email').value.trim()
+    email: email
   };
   try {
     CHAVES_PROGRESSO.forEach(chave => localStorage.removeItem(chave));
